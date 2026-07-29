@@ -1,5 +1,11 @@
+"use strict";
+
+// Packages
 import express, { type Express, type Request, type Response } from "express";
 import morgan from "morgan";
+import bodyParser from "body-parser";
+
+// Types
 import type { Entry } from "./types.js";
 
 const app: Express = express();
@@ -22,14 +28,26 @@ const ENTRIES: Entry[] = [
 ];
 
 app.use(morgan("tiny"));
+app.use(bodyParser.json());
 
 app.get("/", (req: Request, res: Response) => {
+  // Eventually will be a home page
   res.send("Hello World!");
 });
 
 app.get("/entries", (req: Request, res: Response) => {
+  // Serve entries
   res.json(ENTRIES);
 });
+
+app.post("/entries", (req: Request, res: Response) => {
+  // Validate request bodies, then add them to entries
+  let body = req.body;
+  console.log(body);
+  res.send("Recieved a request!");
+});
+
+// FIX ME: Add global error handler
 
 app.listen(PORT, () => {
   console.log(`Example app listening on PORT ${PORT}`);
