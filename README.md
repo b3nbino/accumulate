@@ -58,4 +58,6 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 
 Stay tuned...
 
-P.S. I might also add any other tools that I use, such as those used for creating assets, color pallets, or finding a cool aesthetic. _If I remember._
+## Other Tools/References
+
+- [Markdown editor](https://stackedit.io/app#)
