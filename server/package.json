@@ -1,0 +1,35 @@
+{
+  "name": "accumulate",
+  "version": "1.0.0",
+  "description": "A media completion tracker.",
+  "homepage": "https://github.com/b3nbino/accumulate#readme",
+  "bugs": {
+    "url": "https://github.com/b3nbino/accumulate/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b3nbino/accumulate.git"
+  },
+  "license": "ISC",
+  "author": "B3nbino",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'node --loader ts-node/esm' src/app.ts",
+    "lint": "eslint 'src/**/*.ts'"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.1.2",
+    "eslint": "^10.8.0",
+    "nodemon": "^3.1.14",
+    "npm": "^11.18.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
