@@ -39,6 +39,7 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 
 - [ ] RESTful API
 - [ ] Relational database storage
+  - [ ] [Current ERD](https://excalidraw.com/#json=C__3hdQRyS6CVFnNQ-vh-,U1u-CudI9DGr4sFwLEucBg)
 - [ ] Responsive frontend
 - [ ] Third party API integration
   - [ ] [The Movie Database](https://developer.themoviedb.org/reference/collection-details)
