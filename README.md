@@ -6,7 +6,7 @@ This is a project that I'm creating to help **sharpen** and **showcase** my abil
 
 ## :ledger: Introduction
 
-Accumulate is a media tracker for logging games, TV shows, movies, and books. My end goal is to have a one stop shop for all kinds of media, possibly even including things like Comics/Manga, Podcasts,
+Accumulate is a media tracker for logging games, TV shows, movies, and books. My end goal is to have a one stop shop for all kinds of media, possibly even including things like Comics/Manga, Podcasts, Etc... It's currently a WIP.
 
 ## :hammer: Tools/Technologies
 
