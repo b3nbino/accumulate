@@ -1,13 +1,18 @@
 "use strict";
 
 // Packages
-import express, { type Express, type Request, type Response } from "express";
+import express, {
+  type Express,
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import { isValidNewEntry } from "./helpers/isValidNewEntry.js";
 
 // Types
-import type { Entry, NewEntry } from "./types/entries.js";
+import type { Entry, NewEntry, PartialEntry } from "./types/entries.js";
 
 const app: Express = express();
 const PORT = 3000;
@@ -67,12 +72,112 @@ app.post("/entries", (req: Request, res: Response) => {
     // Add to entries
     ENTRIES.push(entry);
 
+    res.statusCode = 201;
     res.json(ENTRIES);
   } else {
     console.log("400: Bad request");
-
     res.statusCode = 400;
     res.send("There was a problem with your request.");
+  }
+});
+
+app.patch("/entries/:entryId", (req: Request, res: Response) => {
+  let entryId: number = Number(req.params.entryId);
+
+  if (ENTRIES.some((entry) => entry.id === entryId)) {
+    let edits: PartialEntry = req.body;
+
+    for (let prop in edits) {
+      // Could be a switch statement but oops...
+      if (prop === "db_id" && typeof edits[prop] === "number") {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (prop === "title" && typeof edits[prop] === "string") {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (prop === "release_date" && typeof edits[prop] === "string") {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (
+        prop === "start_date" &&
+        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
+      ) {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (
+        prop === "finish_date" &&
+        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
+      ) {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (prop === "status" && typeof edits[prop] === "string") {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (
+        prop === "progress" &&
+        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
+      ) {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (
+        prop === "user_rating" &&
+        (typeof edits[prop] === "number" || typeof edits[prop] === "undefined")
+      ) {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (
+        prop === "review" &&
+        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
+      ) {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (prop === "liked" && typeof edits[prop] === "boolean") {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else if (
+        prop === "tags" &&
+        ((Array.isArray(edits[prop]) &&
+          edits[prop].every((elem) => typeof elem === "string")) ||
+          typeof edits[prop] === "undefined")
+      ) {
+        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+        if (currEntry !== undefined) {
+          currEntry[prop] = edits[prop];
+        }
+      } else {
+        // Extra properties
+        // res.statusCode = 400;
+        // res.send("Failed to edit resource.");
+        // return;
+      }
+    }
+
+    res.statusCode = 200;
+    res.json(ENTRIES[entryId]);
+  } else {
+    console.log("Error updating resouce.");
+    res.statusCode = 404;
+    res.send("Failed to edit resource.");
   }
 });
 
@@ -87,13 +192,18 @@ app.delete("/entries/:entryId", (req: Request, res: Response) => {
     res.json(ENTRIES);
   } else {
     console.log("Error deleting entry.");
-
     res.statusCode = 404;
     res.send("Failed to delete resouce.");
   }
 });
 
-// FIX ME: Add global error handler
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(500);
+  res.render("error", { error: err });
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on PORT ${PORT}`);

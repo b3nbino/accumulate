@@ -19,3 +19,4 @@ export interface Entry {
 }
 
 export type NewEntry = Omit<Entry, "id">;
+export type PartialEntry = Partial<Entry>;
