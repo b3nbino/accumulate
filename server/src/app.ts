@@ -11,7 +11,7 @@ import type { Entry, NewEntry } from "./types/entries.js";
 
 const app: Express = express();
 const PORT = 3000;
-const ENTRIES: Entry[] = [
+let ENTRIES: Entry[] = [
   {
     id: 1,
     db_id: 1,
@@ -73,7 +73,23 @@ app.post("/entries", (req: Request, res: Response) => {
 
     res.statusCode = 400;
     res.send("There was a problem with your request.");
-    return;
+  }
+});
+
+app.delete("/entries/:entryId", (req: Request, res: Response) => {
+  let entryId: number = Number(req.params.entryId);
+
+  // Make sure the resouce exists
+  if (ENTRIES.some((entry) => entry.id === entryId)) {
+    ENTRIES = ENTRIES.filter((entry) => entry.id !== entryId);
+
+    res.statusCode = 200;
+    res.json(ENTRIES);
+  } else {
+    console.log("Error deleting entry.");
+
+    res.statusCode = 404;
+    res.send("Failed to delete resouce.");
   }
 });
 
