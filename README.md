@@ -6,7 +6,7 @@ This is a project that I'm creating to help **sharpen** and **showcase** my abil
 
 ## :ledger: Introduction
 
-Accumulate is a media tracker for logging games, TV shows, movies, and books. My end goal is to have a one stop shop for all kinds of media, possibly even including things like Comics/Manga, Podcasts, Etc... It's currently a WIP.
+Accumulate is a media tracker for logging games, TV shows, movies, and books. My end goal is to have a one stop shop for all kinds of media, possibly even including things like Comics/Manga, Podcasts,
 
 ## :hammer: Tools/Technologies
 
@@ -65,6 +65,13 @@ To check out the current progress for yourself (assuming you have Node installed
 1.  Clone the repo.
 2.  Install packages for the app and server directories (they are separate).
 3.  Navigate to each part and run "npm run dev" or alternatively "npm run build" then "npm start".
+
+## Next Steps
+
+- Implement view of entries
+- Implement data layer + PSQL integration
+- Create tests for unit, end-to-end, and maybe integration
+- Connect third party API with movies, probably TMDB
 
 ## Other Tools/References
 
