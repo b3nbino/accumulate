@@ -6,7 +6,7 @@ This is a project that I'm creating to help **sharpen** and **showcase** my abil
 
 ## :ledger: Introduction
 
-Accumulate is a media tracker for logging games, TV shows, movies, and books.
+Accumulate is a media tracker for logging games, TV shows, movies, and books. My end goal is to have a one stop shop for all kinds of media, possibly even including things like Comics/Manga, Podcasts,
 
 ## :hammer: Tools/Technologies
 
@@ -39,9 +39,12 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 
 - [ ] RESTful API
 - [ ] Relational database storage
+  - [ ] [Current ERD](https://excalidraw.com/#json=C__3hdQRyS6CVFnNQ-vh-,U1u-CudI9DGr4sFwLEucBg)
 - [ ] Responsive frontend
 - [ ] Third party API integration
+  - [ ] [The Movie Database](https://developer.themoviedb.org/reference/collection-details)
 - [ ] User accounts/sessions
+  - [ ] JWT Tokens?
 - [ ] Polished styling
 - [ ] Automated testing
   - [ ] Unit
@@ -51,12 +54,24 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 ## :question: Possible Features
 
 - [ ] Publicly accessible cloud hosted website
-- [ ] Infrastructure as Code files
+- [ ] Shareable lists
+- [ ] Infrastructure as Code files or CLI (some kind of easy setup)
 - [ ] AI Chatbot
 
 ## :page_with_curl: Instructions
 
-Stay tuned...
+To check out the current progress for yourself (assuming you have Node installed):
+
+1.  Clone the repo.
+2.  Install packages for the app and server directories (they are separate).
+3.  Navigate to each part and run "npm run dev" or alternatively "npm run build" then "npm start".
+
+## Next Steps
+
+- Implement view of entries
+- Implement data layer + PSQL integration
+- Create tests for unit, end-to-end, and maybe integration
+- Connect third party API with movies, probably TMDB
 
 ## Other Tools/References
 
