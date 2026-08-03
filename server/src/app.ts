@@ -9,6 +9,7 @@ import express, {
 } from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
+import { ENTRIES } from "./data.js";
 import { isValidNewEntry } from "./helpers/isValidNewEntry.js";
 
 // Types
@@ -16,22 +17,6 @@ import type { Entry, NewEntry, PartialEntry } from "./types/entries.js";
 
 const app: Express = express();
 const PORT = 3000;
-let ENTRIES: Entry[] = [
-  {
-    id: 1,
-    db_id: 1,
-    title: "Baby Driver",
-    release_date: "March 11th, 2017",
-    start_date: "July 7th, 2026",
-    finish_date: "July 7th, 2026",
-    status: "completed",
-    progress: "100%",
-    user_rating: 10,
-    review: "",
-    liked: true,
-    tags: ["soundtrack", "driving"],
-  },
-];
 
 app.use(morgan("tiny"));
 app.use(bodyParser.json());
@@ -173,7 +158,7 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
     }
 
     res.statusCode = 200;
-    res.json(ENTRIES[entryId]);
+    res.json(ENTRIES[ENTRIES.findIndex((entry) => entry.id === entryId)]);
   } else {
     console.log("Error updating resouce.");
     res.statusCode = 404;
@@ -186,7 +171,10 @@ app.delete("/entries/:entryId", (req: Request, res: Response) => {
 
   // Make sure the resouce exists
   if (ENTRIES.some((entry) => entry.id === entryId)) {
-    ENTRIES = ENTRIES.filter((entry) => entry.id !== entryId);
+    ENTRIES.splice(
+      ENTRIES.findIndex((entry) => entry.id === entryId),
+      1,
+    );
 
     res.statusCode = 200;
     res.json(ENTRIES);
