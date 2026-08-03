@@ -68,88 +68,87 @@ app.post("/entries", (req: Request, res: Response) => {
 
 app.patch("/entries/:entryId", (req: Request, res: Response) => {
   let entryId: number = Number(req.params.entryId);
+  let edits: PartialEntry = req.body;
+  let currEntry = ENTRIES.find((entry) => entry.id === entryId);
 
-  if (ENTRIES.some((entry) => entry.id === entryId)) {
-    let edits: PartialEntry = req.body;
-
+  if (currEntry) {
     for (let prop in edits) {
-      // Could be a switch statement but oops...
-      if (prop === "db_id" && typeof edits[prop] === "number") {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (prop === "title" && typeof edits[prop] === "string") {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (prop === "release_date" && typeof edits[prop] === "string") {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (
-        prop === "start_date" &&
-        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
-      ) {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (
-        prop === "finish_date" &&
-        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
-      ) {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (prop === "status" && typeof edits[prop] === "string") {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (
-        prop === "progress" &&
-        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
-      ) {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (
-        prop === "user_rating" &&
-        (typeof edits[prop] === "number" || typeof edits[prop] === "undefined")
-      ) {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (
-        prop === "review" &&
-        (typeof edits[prop] === "string" || typeof edits[prop] === "undefined")
-      ) {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (prop === "liked" && typeof edits[prop] === "boolean") {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else if (
-        prop === "tags" &&
-        ((Array.isArray(edits[prop]) &&
-          edits[prop].every((elem) => typeof elem === "string")) ||
-          typeof edits[prop] === "undefined")
-      ) {
-        let currEntry = ENTRIES.find((entry) => entry.id === entryId);
-        if (currEntry !== undefined) {
-          currEntry[prop] = edits[prop];
-        }
-      } else {
+      switch (prop) {
+        case "db_id":
+          if (typeof edits[prop] === "number") {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "title":
+          if (typeof edits[prop] === "string") {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "release_date":
+          if (typeof edits[prop] === "string") {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "start_date":
+          if (
+            typeof edits[prop] === "string" ||
+            typeof edits[prop] === "undefined"
+          ) {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "finish_date":
+          if (
+            typeof edits[prop] === "string" ||
+            typeof edits[prop] === "undefined"
+          ) {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "status":
+          if (typeof edits[prop] === "string") {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "progress":
+          if (
+            typeof edits[prop] === "string" ||
+            typeof edits[prop] === "undefined"
+          ) {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "user_rating":
+          if (
+            typeof edits[prop] === "number" ||
+            typeof edits[prop] === "undefined"
+          ) {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "review":
+          if (
+            typeof edits[prop] === "string" ||
+            typeof edits[prop] === "undefined"
+          ) {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "liked":
+          if (typeof edits[prop] === "boolean") {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        case "tags":
+          if (
+            (Array.isArray(edits[prop]) &&
+              edits[prop].every((elem) => typeof elem === "string")) ||
+            typeof edits[prop] === "undefined"
+          ) {
+            currEntry[prop] = edits[prop];
+          }
+          break;
+        default:
         // Extra properties
         // res.statusCode = 400;
         // res.send("Failed to edit resource.");
