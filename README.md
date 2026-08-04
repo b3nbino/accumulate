@@ -69,9 +69,9 @@ To check out the current progress for yourself (assuming you have Node installed
 ## Next Steps
 
 - Implement view of entries
+- Connect third party API with movies, probably TMDB
 - Implement data layer + PSQL integration
 - Create tests for unit, end-to-end, and maybe integration
-- Connect third party API with movies, probably TMDB
 
 ## Other Tools/References
 
