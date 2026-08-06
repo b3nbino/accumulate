@@ -1,10 +1,12 @@
+import type { ReactNode } from "react";
+
 function App() {
   const ENTRIES = [
     {
       id: 1,
       media_id: 1,
       source: "",
-      type: "movie",
+      type: "Movie",
       title: "Baby Driver",
       release_date: new Date("March 11 2017"),
       start_date: new Date("July 7 2026"),
@@ -22,7 +24,7 @@ function App() {
       id: 2,
       media_id: 2,
       source: "",
-      type: "book",
+      type: "Book",
       title: "Neuromancer",
       release_date: new Date("March 11 2017"),
       start_date: new Date("July 7 2026"),
@@ -37,7 +39,7 @@ function App() {
       id: 3,
       media_id: 23,
       source: "",
-      type: "game",
+      type: "Game",
       title: "Minecraft",
       release_date: new Date("March 11 2017"),
       start_date: new Date("July 7 2016"),
@@ -55,12 +57,12 @@ function App() {
       id: 4,
       media_id: 14,
       source: "",
-      type: "tv-show",
+      type: "TV-Show",
       title: "Squid Game S1",
       release_date: new Date("September 12 2011"),
       start_date: new Date("July 7 2026"),
       finish_date: new Date("August 25 2026"),
-      last_edited_date: new Date("June 31 2026"),
+      last_edited_date: new Date("June 30 2026"),
       status: "dropped",
       progress: 2,
       total_length: 9,
@@ -71,29 +73,38 @@ function App() {
     },
   ];
 
+  function listEntries(allEntrires): ReactNode {
+    const entryList = allEntrires.map((entry) => {
+      return (
+        <li className="entry" key={entry.id}>
+          <p>
+            {entry.last_edited_date.toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
+          <p>{entry.title}</p>
+          <p>{entry.type}</p>
+          <p>
+            {entry.progress}/{entry.total_length} {entry.progress_type}
+          </p>
+          {entry.user_rating ?
+            <p>{entry.user_rating}</p>
+          : null}
+          <p>{entry.liked.toString()}</p>
+          <button>+</button>
+        </li>
+      );
+    });
+    return <ul id="entries">{...entryList}</ul>;
+  }
+
   return (
     <>
       <main>
         <section id="diary">
           {/* Eventually we'll need to add the thumb URL. Once we connect the API. Make sure to change finish date to last edited date */}
-          <ul id="entries">
-            <li className="entry">
-              <p>{ENTRIES[0].last_edited_date.toDateString()}</p>
-              <p>{ENTRIES[0].title}</p>
-              <p>{ENTRIES[0].status}</p>
-              <p>{ENTRIES[0].progress}</p>
-              <p>{ENTRIES[0].user_rating}</p>
-              <p>{ENTRIES[0].liked}</p>
-            </li>
-            <li className="entry">
-              <p>{ENTRIES[1].last_edited_date.toDateString()}</p>
-              <p>{ENTRIES[1].title}</p>
-              <p>{ENTRIES[1].status}</p>
-              <p>{ENTRIES[1].progress}</p>
-              <p>{ENTRIES[1].user_rating}</p>
-              <p>{ENTRIES[1].liked}</p>
-            </li>
-          </ul>
+          {listEntries(ENTRIES)}
         </section>
       </main>
     </>
