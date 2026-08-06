@@ -1,3 +1,10 @@
+import {
+  faStar,
+  faStarHalf,
+  faHeart as solidHeart,
+} from "@fortawesome/free-solid-svg-icons";
+import { faHeart as hollowHeart } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { ReactNode } from "react";
 
 function App() {
@@ -73,6 +80,20 @@ function App() {
     },
   ];
 
+  function listRating(rating: number): ReactNode {
+    const stars = [];
+
+    for (let i = 0; i < Math.floor(rating / 2); i++) {
+      stars.push(<FontAwesomeIcon icon={faStar} />);
+    }
+
+    if (rating % 2 !== 0) {
+      stars.push(<FontAwesomeIcon icon={faStarHalf} />);
+    }
+
+    return <>{...stars}</>;
+  }
+
   function listEntries(allEntrires): ReactNode {
     const entryList = allEntrires.map((entry) => {
       return (
@@ -89,9 +110,13 @@ function App() {
             {entry.progress}/{entry.total_length} {entry.progress_type}
           </p>
           {entry.user_rating ?
-            <p>{entry.user_rating}</p>
+            <p>{listRating(entry.user_rating)}</p>
           : null}
-          <p>{entry.liked.toString()}</p>
+          <p>
+            {entry.liked ?
+              <FontAwesomeIcon icon={solidHeart} />
+            : <FontAwesomeIcon icon={hollowHeart} />}
+          </p>
           <button>+</button>
         </li>
       );
