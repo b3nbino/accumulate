@@ -1,4 +1,5 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   border: 0;
   padding: 0;
@@ -8,6 +9,9 @@
 body {
   background-color: rgb(41, 40, 40);
   color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 24px;
 }
 
 section {
@@ -16,5 +20,88 @@ section {
 }
 
 .entry {
-  border-bottom: 1px solid gray;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgb(68, 66, 66);
+}
+
+.last-edited-date {
+  width: 90px;
+  padding: 24px;
+  text-align: center;
+}
+
+.diary-middle {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.diary-right {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.title {
+  margin-right: 12px;
+}
+
+.type-Movie {
+  padding: 0px 12px 3px;
+  color: rgb(143, 1, 1);
+  background-color: red;
+  border-radius: 24px;
+}
+.type-Book {
+  padding: 0px 12px 3px;
+  color: rgb(1, 90, 1);
+  background-color: green;
+  border-radius: 24px;
+}
+.type-Game {
+  padding: 0px 12px 3px;
+  color: rgb(65, 0, 65);
+  background-color: purple;
+  border-radius: 24px;
+}
+.type-TV-Show {
+  padding: 0px 12px 3px;
+  color: rgb(0, 0, 141);
+  background-color: blue;
+  border-radius: 24px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.buttons button {
+  background-color: rgb(41, 40, 40);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.buttons .like {
+  color: red;
+  margin-right: 6px;
+}
+
+.buttons .add {
+  color: rgb(68, 66, 66);
+  margin-left: 6px;
 }

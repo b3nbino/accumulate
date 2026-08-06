@@ -3,7 +3,11 @@ import {
   faStarHalf,
   faHeart as solidHeart,
 } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as hollowHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faSquarePlus,
+  faHeart as hollowHeart,
+  faStar as hollowStar,
+} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { ReactNode } from "react";
 
@@ -81,14 +85,25 @@ function App() {
   ];
 
   function listRating(rating: number): ReactNode {
+    if (rating === undefined) {
+      return (
+        <>
+          <FontAwesomeIcon icon={hollowStar} size="1x" />
+          <FontAwesomeIcon icon={hollowStar} size="1x" />
+          <FontAwesomeIcon icon={hollowStar} size="1x" />
+          <FontAwesomeIcon icon={hollowStar} size="1x" />
+          <FontAwesomeIcon icon={hollowStar} size="1x" />
+        </>
+      );
+    }
     const stars = [];
 
     for (let i = 0; i < Math.floor(rating / 2); i++) {
-      stars.push(<FontAwesomeIcon icon={faStar} />);
+      stars.push(<FontAwesomeIcon icon={faStar} size="1x" />);
     }
 
     if (rating % 2 !== 0) {
-      stars.push(<FontAwesomeIcon icon={faStarHalf} />);
+      stars.push(<FontAwesomeIcon icon={faStarHalf} size="1x" />);
     }
 
     return <>{...stars}</>;
@@ -98,26 +113,41 @@ function App() {
     const entryList = allEntrires.map((entry) => {
       return (
         <li className="entry" key={entry.id}>
-          <p>
-            {entry.last_edited_date.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
-          <p>{entry.title}</p>
-          <p>{entry.type}</p>
-          <p>
-            {entry.progress}/{entry.total_length} {entry.progress_type}
-          </p>
-          {entry.user_rating ?
+          <div className="last-edited-date">
+            {entry.last_edited_date
+              .toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+              })
+              .split(" ")
+              .map((part: string) => (
+                <p>{part}</p>
+              ))}
+          </div>
+          <div className="diary-middle">
+            <div className="header">
+              <p className="title">{entry.title}</p>
+              <p className={`type-${entry.type}`}>{entry.type}</p>
+            </div>
+            <div className="progress-bar">
+              <p className="progress">
+                {entry.progress}/{entry.total_length} {entry.progress_type}
+              </p>
+            </div>
+          </div>
+          <div className="diary-right">
             <p>{listRating(entry.user_rating)}</p>
-          : null}
-          <p>
-            {entry.liked ?
-              <FontAwesomeIcon icon={solidHeart} />
-            : <FontAwesomeIcon icon={hollowHeart} />}
-          </p>
-          <button>+</button>
+            <div className="buttons">
+              <button className="like">
+                {entry.liked ?
+                  <FontAwesomeIcon icon={solidHeart} size="2x" />
+                : <FontAwesomeIcon icon={hollowHeart} size="2x" />}
+              </button>
+              <button className="add">
+                <FontAwesomeIcon icon={faSquarePlus} size="2x" />
+              </button>
+            </div>
+          </div>
         </li>
       );
     });
