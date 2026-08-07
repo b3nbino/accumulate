@@ -137,6 +137,9 @@ function App() {
                 <p>{part}</p>
               ))}
           </div>
+          <div className="entry-thumb">
+            <img src="./public/placeholder.jpg" alt="" />
+          </div>
           <div className="diary-middle">
             <div className="header">
               <p className="title">{entry.title}</p>
