@@ -75,7 +75,7 @@ function App() {
       finish_date: new Date("August 25 2026"),
       last_edited_date: new Date("June 30 2026"),
       status: "dropped",
-      progress: 2,
+      progress: 8,
       total_length: 9,
       progress_type: "episodes",
       user_rating: 1,
@@ -109,6 +109,19 @@ function App() {
     return <>{...stars}</>;
   }
 
+  function getProgressColor(progressType: string) {
+    switch (progressType) {
+      case "Movie":
+        return "red";
+      case "Book":
+        return "green";
+      case "Game":
+        return "purple";
+      case "TV-Show":
+        return "blue";
+    }
+  }
+
   function listEntries(allEntrires): ReactNode {
     const entryList = allEntrires.map((entry) => {
       return (
@@ -130,6 +143,19 @@ function App() {
               <p className={`type-${entry.type}`}>{entry.type}</p>
             </div>
             <div className="progress-bar">
+              <div
+                style={{
+                  height: "32px",
+                  width: `${Math.floor((entry.progress / entry.total_length) * 100)}%`,
+                  border: "2px solid white",
+                  borderTopLeftRadius: "24px",
+                  borderBottomLeftRadius: "24px",
+                  borderTopRightRadius: `${entry.progress === entry.total_length ? "24px" : "6px"}`,
+                  borderBottomRightRadius: `${entry.progress === entry.total_length ? "24px" : "6px"}`,
+                  position: "relative",
+                  backgroundColor: `${getProgressColor(entry.type)}`,
+                }}
+              ></div>
               <p className="progress">
                 {entry.progress}/{entry.total_length} {entry.progress_type}
               </p>
@@ -140,11 +166,11 @@ function App() {
             <div className="buttons">
               <button className="like">
                 {entry.liked ?
-                  <FontAwesomeIcon icon={solidHeart} size="2x" />
-                : <FontAwesomeIcon icon={hollowHeart} size="2x" />}
+                  <FontAwesomeIcon icon={solidHeart} size="3x" />
+                : <FontAwesomeIcon icon={hollowHeart} size="3x" />}
               </button>
               <button className="add">
-                <FontAwesomeIcon icon={faSquarePlus} size="2x" />
+                <FontAwesomeIcon icon={faSquarePlus} size="3x" />
               </button>
             </div>
           </div>

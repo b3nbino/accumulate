@@ -37,6 +37,7 @@ section {
   display: flex;
   flex-direction: column;
   padding: 24px;
+  width: 50%;
 }
 
 .diary-right {
@@ -50,6 +51,8 @@ section {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
 .title {
@@ -57,24 +60,32 @@ section {
 }
 
 .type-Movie {
+  font-size: 20px;
+  font-weight: 500;
   padding: 0px 12px 3px;
   color: rgb(143, 1, 1);
   background-color: red;
   border-radius: 24px;
 }
 .type-Book {
+  font-size: 20px;
+  font-weight: 500;
   padding: 0px 12px 3px;
   color: rgb(1, 90, 1);
   background-color: green;
   border-radius: 24px;
 }
 .type-Game {
+  font-size: 20px;
+  font-weight: 500;
   padding: 0px 12px 3px;
   color: rgb(65, 0, 65);
   background-color: purple;
   border-radius: 24px;
 }
 .type-TV-Show {
+  font-size: 20px;
+  font-weight: 500;
   padding: 0px 12px 3px;
   color: rgb(0, 0, 141);
   background-color: blue;
@@ -97,11 +108,31 @@ button:hover {
 }
 
 .buttons .like {
-  color: red;
+  color: white;
   margin-right: 6px;
 }
 
 .buttons .add {
   color: rgb(68, 66, 66);
   margin-left: 6px;
+}
+
+.progress-bar {
+  height: 32px;
+  width: 100%;
+  border-radius: 24px;
+  background-color: white;
+  position: relative;
+}
+
+.progress-bar p.progress {
+  font-weight: normal;
+  font-size: 20px;
+  color: rgb(41, 40, 40);
+  padding: 0px 6px 1px 6px;
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  background-color: rgba(255, 255, 255, 0.425);
+  border-radius: 24px;
 }
