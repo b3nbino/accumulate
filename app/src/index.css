@@ -149,3 +149,32 @@ button:hover {
   width: inherit;
   object-fit: cover;
 }
+
+header {
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  padding-bottom: 6px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  background-color: rgb(68, 66, 66);
+}
+
+header h1 {
+  color: rgb(253, 253, 253);
+  margin-bottom: 12px;
+}
+
+nav {
+  text-align: end;
+}
+
+nav a {
+  background-color: rgba(41, 41, 41);
+  text-decoration: none;
+  color: white;
+  padding: 6px 12px;
+  margin-right: 24px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}

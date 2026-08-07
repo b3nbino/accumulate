@@ -186,6 +186,12 @@ function App() {
   return (
     <>
       <main>
+        <header>
+          <h1>Accumulate</h1>
+          <nav>
+            <a href="">Diary</a>
+          </nav>
+        </header>
         <section id="diary">
           {/* Eventually we'll need to add the thumb URL. Once we connect the API. Make sure to change finish date to last edited date */}
           {listEntries(ENTRIES)}
