@@ -68,17 +68,17 @@ To check out the current progress for yourself (assuming you have Node installed
 
 ## Next Steps
 
-- Refactor components from react app
 - Add functionality to frontend
-- Add typing to react app
-- Update model in server
+  - Connect frontend to backend
 - Implement data layer + PSQL integration
+  - Create PSQL schema + example data
 - Create tests for unit, end-to-end, and maybe integration
 - Connect third party API with movies, probably TMDB
 
 ## Other Tools/References
 
 - [Markdown editor](https://stackedit.io/app#)
+- [Font Awesome](https://fontawesome.com/)
 
 ## Current Frontend
 
