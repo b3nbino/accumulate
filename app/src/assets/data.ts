@@ -1,6 +1,6 @@
-import type { Entry } from "../types/EntryType";
+import type { EntryType } from "../types/EntryType";
 
-export const ENTRIES: Entry[] = [
+export const ENTRIES: EntryType[] = [
   {
     id: 1,
     media_id: 1,

@@ -9,11 +9,15 @@ import express, {
 } from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
-import { ENTRIES } from "./data.js";
+import { ENTRIES } from "./data.ts";
 import { isValidNewEntry } from "./helpers/isValidNewEntry.js";
 
 // Types
-import type { Entry, NewEntry, PartialEntry } from "./types/entries.js";
+import type {
+  EntryType,
+  PartialEntryType,
+  NewEntryType,
+} from "./types/EntryType.js";
 
 const app: Express = express();
 const PORT = 3000;
@@ -40,25 +44,30 @@ app.get("/entries/:entryId", (req: Request, res: Response) => {
 
 app.post("/entries", (req: Request, res: Response) => {
   // Validate request bodies, then add them to entries
-  let body: NewEntry = req.body;
+  let body: NewEntryType = req.body;
 
   if (isValidNewEntry(body)) {
     let id = Math.floor(Math.random() * 1000) + 1;
+    let lastEdited = new Date().toJSON();
 
     // Extract the properties we want, which are validated, extra fields could be a security flaw
-    let entry: Entry = {
+    let entry: EntryType = {
       id,
-      db_id: body.db_id,
+      media_id: body.media_id,
+      source: body.source,
+      type: body.type,
       title: body.title,
+      last_edited_date: lastEdited,
       release_date: body.release_date,
       start_date: body?.start_date,
       finish_date: body?.finish_date,
       status: body.status,
       progress: body?.progress,
+      total_length: body.total_length,
+      progress_type: body.progress_type,
       user_rating: body?.user_rating,
       review: body?.review,
       liked: body.liked,
-      tags: body?.tags,
     };
 
     // Add to entries
@@ -75,27 +84,13 @@ app.post("/entries", (req: Request, res: Response) => {
 
 app.patch("/entries/:entryId", (req: Request, res: Response) => {
   let entryId: number = Number(req.params.entryId);
-  let edits: PartialEntry = req.body;
+  let edits: PartialEntryType = req.body;
   let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+  const MAX_SAFE_INTEGER = 9007199254740991;
 
   if (currEntry) {
     for (let prop in edits) {
       switch (prop) {
-        case "db_id":
-          if (typeof edits[prop] === "number") {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        case "title":
-          if (typeof edits[prop] === "string") {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        case "release_date":
-          if (typeof edits[prop] === "string") {
-            currEntry[prop] = edits[prop];
-          }
-          break;
         case "start_date":
           if (
             typeof edits[prop] === "string" ||
@@ -113,21 +108,27 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
           }
           break;
         case "status":
-          if (typeof edits[prop] === "string") {
+          if (
+            edits[prop] === "completed" ||
+            edits[prop] === "dropped" ||
+            edits[prop] === "on-hold" ||
+            edits[prop] === "plan to watch" ||
+            edits[prop] === "watching"
+          ) {
             currEntry[prop] = edits[prop];
           }
           break;
         case "progress":
           if (
-            typeof edits[prop] === "string" ||
-            typeof edits[prop] === "undefined"
+            typeof edits[prop] === "number" &&
+            edits[prop] < MAX_SAFE_INTEGER
           ) {
             currEntry[prop] = edits[prop];
           }
           break;
         case "user_rating":
           if (
-            typeof edits[prop] === "number" ||
+            (typeof edits[prop] === "number" && edits[prop] <= 10) ||
             typeof edits[prop] === "undefined"
           ) {
             currEntry[prop] = edits[prop];
@@ -146,15 +147,6 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
             currEntry[prop] = edits[prop];
           }
           break;
-        case "tags":
-          if (
-            (Array.isArray(edits[prop]) &&
-              edits[prop].every((elem) => typeof elem === "string")) ||
-            typeof edits[prop] === "undefined"
-          ) {
-            currEntry[prop] = edits[prop];
-          }
-          break;
         default:
         // Extra properties
         // res.statusCode = 400;
@@ -162,6 +154,8 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
         // return;
       }
     }
+
+    currEntry.last_edited_date = new Date().toJSON();
 
     res.statusCode = 200;
     res.json(ENTRIES[ENTRIES.findIndex((entry) => entry.id === entryId)]);
@@ -183,7 +177,7 @@ app.delete("/entries/:entryId", (req: Request, res: Response) => {
     );
 
     res.statusCode = 200;
-    res.json(ENTRIES);
+    res.send("Entry deleted");
   } else {
     console.log("Error deleting entry.");
     res.statusCode = 404;
