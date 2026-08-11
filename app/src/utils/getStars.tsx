@@ -18,11 +18,11 @@ export function getStars(rating: number | undefined): ReactNode {
   const stars = [];
 
   for (let i = 0; i < Math.floor(rating / 2); i++) {
-    stars.push(<FontAwesomeIcon icon={faStar} size="1x" />);
+    stars.push(<FontAwesomeIcon icon={faStar} size="1x" key={i} />);
   }
 
   if (rating % 2 !== 0) {
-    stars.push(<FontAwesomeIcon icon={faStarHalf} size="1x" />);
+    stars.push(<FontAwesomeIcon icon={faStarHalf} size="1x" key={"last"} />);
   }
 
   return <>{...stars}</>;
