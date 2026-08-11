@@ -31,6 +31,13 @@ app.get("/entries", (req: Request, res: Response) => {
   res.json(ENTRIES);
 });
 
+app.get("/entries/:entryId", (req: Request, res: Response) => {
+  // Serve a single entry
+
+  let entryId = Number(req.params.entryId);
+  res.json(ENTRIES.find((entry) => entry.id === entryId));
+});
+
 app.post("/entries", (req: Request, res: Response) => {
   // Validate request bodies, then add them to entries
   let body: NewEntry = req.body;
