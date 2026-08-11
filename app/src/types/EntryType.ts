@@ -1,4 +1,4 @@
-export interface Entry {
+export interface EntryType {
   id: number;
   media_id: number;
   source: string;

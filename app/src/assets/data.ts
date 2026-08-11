@@ -1,4 +1,4 @@
-import type { Entry } from "../types/entry";
+import type { Entry } from "../types/EntryType";
 
 export const ENTRIES: Entry[] = [
   {
