@@ -24,7 +24,7 @@ section {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid rgb(68, 66, 66);
+  border-top: 2px solid rgb(68, 66, 66);
 }
 
 .last-edited-date {
@@ -71,7 +71,7 @@ section {
   font-size: 20px;
   font-weight: 500;
   padding: 0px 12px 3px;
-  color: rgb(1, 90, 1);
+  color: rgb(0, 65, 0);
   background-color: green;
   border-radius: 24px;
 }
@@ -87,7 +87,7 @@ section {
   font-size: 20px;
   font-weight: 500;
   padding: 0px 12px 3px;
-  color: rgb(0, 0, 141);
+  color: rgb(0, 0, 117);
   background-color: blue;
   border-radius: 24px;
 }
@@ -177,4 +177,27 @@ nav a {
   margin-right: 24px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+}
+
+#diary-sort-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 12px;
+}
+
+#diary-sort-options li button {
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+#diary-topper {
+  margin: 12px 0px;
+}
+
+.spacer {
+  border-left: 2px solid rgb(68, 66, 66);
 }

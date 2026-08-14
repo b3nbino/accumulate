@@ -30,5 +30,33 @@ export default function Diary(): ReactNode {
     return <ul id="entries">{...entryList}</ul>;
   }
 
-  return <section id="diary">{listEntries(entries)}</section>;
+  return (
+    <section id="diary">
+      <div id="diary-topper">
+        <ul id="diary-sort-options">
+          <li>
+            <button>Last Edited</button>
+          </li>
+          <li className="spacer"></li>
+          <li>
+            <button>Title</button>
+          </li>
+          <li>
+            <button>Progress</button>
+          </li>
+          <li>
+            <button>Type</button>
+          </li>
+          <li className="spacer"></li>
+          <li>
+            <button>Rating</button>
+          </li>
+          <li>
+            <button>Liked</button>
+          </li>
+        </ul>
+      </div>
+      {listEntries(entries)}
+    </section>
+  );
 }
