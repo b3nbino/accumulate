@@ -22,9 +22,68 @@ export default function Diary(): ReactNode {
     })();
   }, []);
 
+  async function updateLike(id: number, liked: boolean) {
+    const res = await fetch(`/entries/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        liked,
+      }),
+    });
+    const json = await res.json();
+
+    if ("last_edited_date" in json) {
+      json.last_edited_date = new Date(json.last_edited_date);
+    }
+
+    const entriesCopy = [...entries];
+
+    entriesCopy.splice(
+      entriesCopy.findIndex((elem) => elem.id === id),
+      1,
+      json,
+    );
+    setEntries(entriesCopy);
+  }
+
+  async function updateProgress(id: number, progress: number) {
+    const res = await fetch(`/entries/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        progress,
+      }),
+    });
+    const json = await res.json();
+
+    if ("last_edited_date" in json) {
+      json.last_edited_date = new Date(json.last_edited_date);
+    }
+
+    const entriesCopy = [...entries];
+
+    entriesCopy.splice(
+      entriesCopy.findIndex((elem) => elem.id === id),
+      1,
+      json,
+    );
+    setEntries(entriesCopy);
+  }
+
   function listEntries(allEntrires: EntryType[]): ReactNode {
     const entryList = allEntrires.map((entry) => {
-      return <Entry key={entry.id} {...entry}></Entry>;
+      return (
+        <Entry
+          key={entry.id}
+          {...entry}
+          onLike={updateLike}
+          onIncrement={updateProgress}
+        ></Entry>
+      );
     });
 
     return <ul id="entries">{...entryList}</ul>;

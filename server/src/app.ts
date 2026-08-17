@@ -85,7 +85,9 @@ app.post("/entries", (req: Request, res: Response) => {
 app.patch("/entries/:entryId", (req: Request, res: Response) => {
   let entryId: number = Number(req.params.entryId);
   let edits: PartialEntryType = req.body;
-  let currEntry = ENTRIES.find((entry) => entry.id === entryId);
+  let currEntry: EntryType | undefined = ENTRIES.find(
+    (entry) => entry.id === entryId,
+  );
   const MAX_SAFE_INTEGER = 9007199254740991;
 
   if (currEntry) {
@@ -123,7 +125,18 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
             typeof edits[prop] === "number" &&
             edits[prop] < MAX_SAFE_INTEGER
           ) {
-            currEntry[prop] = edits[prop];
+            if (
+              "total_length" in currEntry &&
+              typeof currEntry.total_length === "number" &&
+              edits[prop] <= currEntry.total_length &&
+              edits[prop] >= 0
+            ) {
+              currEntry[prop] = edits[prop];
+            } else {
+              res.statusCode = 400;
+              res.send("Cannot update entry.");
+              return;
+            }
           }
           break;
         case "user_rating":

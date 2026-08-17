@@ -8,6 +8,11 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+interface EntryProps extends EntryType {
+  onLike: (id: number, liked: boolean) => void;
+  onIncrement: (id: number, progress: number) => void;
+}
+
 export default function Entry({
   id,
   last_edited_date,
@@ -18,7 +23,9 @@ export default function Entry({
   progress_type,
   user_rating,
   liked,
-}: EntryType): ReactNode {
+  onLike,
+  onIncrement,
+}: EntryProps): ReactNode {
   function getMediaTypeColor(
     progressType: "Movie" | "Game" | "Book" | "TV-Show",
   ): string {
@@ -77,12 +84,25 @@ export default function Entry({
       <div className="diary-right">
         <p>{getStars(user_rating)}</p>
         <div className="buttons">
-          <button className="like">
+          <button
+            className="like"
+            onClick={() => {
+              onLike(id, !liked);
+            }}
+          >
             {liked ?
               <FontAwesomeIcon icon={solidHeart} size="3x" />
             : <FontAwesomeIcon icon={hollowHeart} size="3x" />}
           </button>
-          <button className="add">
+          <button
+            className="add"
+            onClick={() => {
+              if (progress && progress < total_length) {
+                onIncrement(id, progress ? progress + 1 : 1);
+              }
+            }}
+            disabled={progress === total_length}
+          >
             <FontAwesomeIcon icon={faSquarePlus} size="3x" />
           </button>
         </div>
