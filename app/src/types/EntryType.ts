@@ -9,7 +9,7 @@ export interface EntryType {
   finish_date?: Date;
   last_edited_date: Date;
   status: "watching" | "completed" | "plan to watch" | "on-hold" | "dropped";
-  progress?: number;
+  progress: number;
   total_length: number;
   progress_type: string;
   user_rating?: number;
