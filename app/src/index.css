@@ -1,111 +1,203 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
+  background-color: rgb(41, 40, 40);
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
   font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+section {
+  margin: auto;
+  width: 50%;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+.entry {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid rgb(68, 66, 66);
+}
+
+.last-edited-date {
+  width: 90px;
+  padding: 24px;
+  text-align: center;
+}
+
+.diary-middle {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  width: 50%;
+}
+
+.diary-right {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.title {
+  margin-right: 12px;
+}
+
+.type-Movie {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0px 12px 3px;
+  color: rgb(143, 1, 1);
+  background-color: red;
+  border-radius: 24px;
+}
+.type-Book {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0px 12px 3px;
+  color: rgb(0, 65, 0);
+  background-color: green;
+  border-radius: 24px;
+}
+.type-Game {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0px 12px 3px;
+  color: rgb(65, 0, 65);
+  background-color: purple;
+  border-radius: 24px;
+}
+.type-TV-Show {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0px 12px 3px;
+  color: rgb(0, 0, 117);
+  background-color: blue;
+  border-radius: 24px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.buttons button {
+  background-color: rgb(41, 40, 40);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.buttons .like {
+  color: white;
+  margin-right: 6px;
+}
+
+.buttons .add {
+  color: rgb(68, 66, 66);
+  margin-left: 6px;
+}
+
+.progress-bar {
+  height: 32px;
+  width: 100%;
+  border-radius: 24px;
+  background-color: white;
+  position: relative;
+}
+
+.progress-bar p.progress {
+  font-weight: normal;
+  font-size: 20px;
+  color: rgb(41, 40, 40);
+  padding: 0px 6px 1px 6px;
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  background-color: rgba(255, 255, 255, 0.425);
+  border-radius: 24px;
+}
+
+.entry-thumb {
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.entry-thumb img {
+  height: inherit;
+  width: inherit;
+  object-fit: cover;
+}
+
+header {
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  padding-bottom: 6px;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  background-color: rgb(68, 66, 66);
+}
+
+header h1 {
+  color: rgb(253, 253, 253);
+  margin-bottom: 12px;
+}
+
+nav {
+  text-align: end;
+}
+
+nav a {
+  background-color: rgba(41, 41, 41);
+  text-decoration: none;
+  color: white;
+  padding: 6px 12px;
+  margin-right: 24px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+#diary-sort-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0px 12px;
+}
+
+#diary-sort-options li button {
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+#diary-topper {
+  margin: 12px 0px;
+}
+
+.spacer {
+  border-left: 2px solid rgb(68, 66, 66);
 }
