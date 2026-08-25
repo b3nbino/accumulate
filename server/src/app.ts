@@ -18,7 +18,7 @@ import type {
   PartialEntryType,
   NewEntryType,
 } from "./types/EntryType.js";
-import { getEntries } from "./services/pgEntries.ts";
+import { deleteEntry, getEntries, getEntry } from "./services/pgEntries.ts";
 
 const app: Express = express();
 const PORT = 3000;
@@ -37,11 +37,12 @@ app.get("/entries", async (req: Request, res: Response) => {
   res.json(entries);
 });
 
-app.get("/entries/:entryId", (req: Request, res: Response) => {
+app.get("/entries/:entryId", async (req: Request, res: Response) => {
   // Serve a single entry
 
   let entryId = Number(req.params.entryId);
-  res.json(ENTRIES.find((entry) => entry.id === entryId));
+  let entry = await getEntry(entryId);
+  res.json(entry);
 });
 
 app.post("/entries", (req: Request, res: Response) => {
@@ -181,22 +182,21 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
   }
 });
 
-app.delete("/entries/:entryId", (req: Request, res: Response) => {
-  let entryId: number = Number(req.params.entryId);
+app.delete("/entries/:entryId", async (req: Request, res: Response) => {
+  try {
+    let entryId: number = Number(req.params.entryId);
+    let deleted: boolean = await deleteEntry(entryId);
 
-  // Make sure the resouce exists
-  if (ENTRIES.some((entry) => entry.id === entryId)) {
-    ENTRIES.splice(
-      ENTRIES.findIndex((entry) => entry.id === entryId),
-      1,
-    );
-
-    res.statusCode = 200;
-    res.send("Entry deleted");
-  } else {
-    console.log("Error deleting entry.");
-    res.statusCode = 404;
-    res.send("Failed to delete resouce.");
+    if (deleted) {
+      res.statusCode = 200;
+      res.send("Entry deleted.");
+    } else {
+      res.statusCode = 404;
+      res.send("Entry does not exist.");
+    }
+  } catch {
+    res.statusCode = 500;
+    res.send("Failed to delete entry.");
   }
 });
 
