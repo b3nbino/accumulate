@@ -17,6 +17,3 @@ export default async function pgQuery(query, ...parameters) {
     await pg.end();
   }
 }
-
-pgQuery("SELECT * FROM entries;").then((result) => console.log(result.rows));
-pgQuery("SELECT * FROM entries;").then((result) => console.log(result.rows));

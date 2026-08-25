@@ -14,8 +14,6 @@ export default function Diary(): ReactNode {
   const [sortType, setSortType] = useState<SortTypeType>("date");
   const [sortOrder, setSortOrder] = useState<SortOrderType>("descending");
 
-  console.log(sortType, sortOrder);
-
   useEffect(() => {
     (async () => {
       const req = await fetch("/entries");
