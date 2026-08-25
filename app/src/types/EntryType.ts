@@ -2,7 +2,7 @@ export interface EntryType {
   id: number;
   media_id: number;
   source: string;
-  type: "Movie" | "Book" | "Game" | "TV-Show";
+  media_type: "Movie" | "Book" | "Game" | "TV-Show";
   title: string;
   release_date: Date;
   start_date?: Date;

@@ -11,11 +11,11 @@ export function isValidNewEntry(newEntry: unknown): newEntry is NewEntryType {
     typeof newEntry.media_id === "number" &&
     "source" in newEntry &&
     typeof newEntry.source === "string" &&
-    "type" in newEntry &&
-    (newEntry.type === "Book" ||
-      newEntry.type === "Movie" ||
-      newEntry.type === "Game" ||
-      newEntry.type === "TV-Show") &&
+    "media_type" in newEntry &&
+    (newEntry.media_type === "Book" ||
+      newEntry.media_type === "Movie" ||
+      newEntry.media_type === "Game" ||
+      newEntry.media_type === "TV-Show") &&
     "title" in newEntry &&
     typeof newEntry.title === "string" &&
     "release_date" in newEntry &&

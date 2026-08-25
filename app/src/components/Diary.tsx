@@ -168,9 +168,9 @@ export default function Diary(): ReactNode {
       case "type":
         if (newOrder === "ascending") {
           entriesCopy.sort((a, b) => {
-            if (a.type < b.type) {
+            if (a.media_type < b.media_type) {
               return -1;
-            } else if (a.type > b.type) {
+            } else if (a.media_type > b.media_type) {
               return 1;
             } else {
               return 0;
@@ -178,9 +178,9 @@ export default function Diary(): ReactNode {
           });
         } else {
           entriesCopy.sort((a, b) => {
-            if (a.type > b.type) {
+            if (a.media_type > b.media_type) {
               return -1;
-            } else if (a.type < b.type) {
+            } else if (a.media_type < b.media_type) {
               return 1;
             } else {
               return 0;

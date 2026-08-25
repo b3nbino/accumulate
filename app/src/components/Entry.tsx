@@ -17,7 +17,7 @@ export default function Entry({
   id,
   last_edited_date,
   title,
-  type,
+  media_type,
   progress,
   total_length,
   progress_type,
@@ -60,7 +60,7 @@ export default function Entry({
       <div className="diary-middle">
         <div className="header">
           <p className="title">{title}</p>
-          <p className={`type-${type}`}>{type}</p>
+          <p className={`type-${media_type}`}>{media_type}</p>
         </div>
         <div className="progress-bar">
           <div
@@ -73,7 +73,7 @@ export default function Entry({
               borderTopRightRadius: `${progress === total_length ? "24px" : "6px"}`,
               borderBottomRightRadius: `${progress === total_length ? "24px" : "6px"}`,
               position: "relative",
-              backgroundColor: `${getMediaTypeColor(type)}`,
+              backgroundColor: `${getMediaTypeColor(media_type)}`,
             }}
           ></div>
           <p className="progress">

@@ -18,6 +18,7 @@ import type {
   PartialEntryType,
   NewEntryType,
 } from "./types/EntryType.js";
+import { getEntries } from "./services/pgEntries.ts";
 
 const app: Express = express();
 const PORT = 3000;
@@ -30,9 +31,10 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
 });
 
-app.get("/entries", (req: Request, res: Response) => {
+app.get("/entries", async (req: Request, res: Response) => {
   // Serve entries
-  res.json(ENTRIES);
+  let entries = await getEntries();
+  res.json(entries);
 });
 
 app.get("/entries/:entryId", (req: Request, res: Response) => {
@@ -55,7 +57,7 @@ app.post("/entries", (req: Request, res: Response) => {
       id,
       media_id: body.media_id,
       source: body.source,
-      type: body.type,
+      media_type: body.media_type,
       title: body.title,
       last_edited_date: lastEdited,
       release_date: body.release_date,
