@@ -69,8 +69,8 @@ To check out the current progress for yourself (assuming you have Node installed
 
 ## Next Steps
 
-- Implement data layer + PSQL integration
-  - Create PSQL schema + example data
+- Finish PSQL integration
+- Runtime validation using Zod
 - Create tests for unit, end-to-end, and maybe integration
 - Connect third party API with movies, probably TMDB
 - Improve app styling
