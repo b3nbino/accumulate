@@ -12,8 +12,8 @@ export default async function pgQuery(query, ...parameters) {
     console.log(query, parameters);
     let result = await pg.query(query, parameters);
     return result;
-  } catch {
-    throw new Error("PG connection failed.");
+  } catch (e) {
+    throw new Error(e);
   } finally {
     await pg.end();
   }

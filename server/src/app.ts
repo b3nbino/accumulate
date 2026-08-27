@@ -18,7 +18,12 @@ import type {
   PartialEntryType,
   NewEntryType,
 } from "./types/EntryType.js";
-import { deleteEntry, getEntries, getEntry } from "./services/pgEntries.ts";
+import {
+  createEntry,
+  deleteEntry,
+  getEntries,
+  getEntry,
+} from "./services/pgEntries.ts";
 
 const app: Express = express();
 const PORT = 3000;
@@ -45,43 +50,46 @@ app.get("/entries/:entryId", async (req: Request, res: Response) => {
   res.json(entry);
 });
 
-app.post("/entries", (req: Request, res: Response) => {
+app.post("/entries", async (req: Request, res: Response) => {
   // Validate request bodies, then add them to entries
   let body: NewEntryType = req.body;
 
   if (isValidNewEntry(body)) {
-    let id = Math.floor(Math.random() * 1000) + 1;
     let lastEdited = new Date().toJSON();
 
     // Extract the properties we want, which are validated, extra fields could be a security flaw
-    let entry: EntryType = {
-      id,
+    let entry: NewEntryType = {
       media_id: body.media_id,
       source: body.source,
       media_type: body.media_type,
       title: body.title,
       last_edited_date: lastEdited,
       release_date: body.release_date,
-      start_date: body?.start_date,
-      finish_date: body?.finish_date,
+      start_date: body?.start_date || null,
+      finish_date: body?.finish_date || null,
       status: body.status,
-      progress: body?.progress,
+      progress: body?.progress || null,
       total_length: body.total_length,
       progress_type: body.progress_type,
-      user_rating: body?.user_rating,
-      review: body?.review,
+      user_rating: body?.user_rating || null,
+      review: body?.review || null,
       liked: body.liked,
     };
 
-    // Add to entries
-    ENTRIES.push(entry);
+    try {
+      let entryCreated = await createEntry(entry);
 
-    res.statusCode = 201;
-    res.json(ENTRIES);
-  } else {
-    console.log("400: Bad request");
-    res.statusCode = 400;
-    res.send("There was a problem with your request.");
+      if (entryCreated) {
+        res.statusCode = 201;
+        res.send("Entry successfully created.");
+      } else {
+        throw new Error("Entry failed to create.");
+      }
+    } catch (e) {
+      console.error(e);
+      res.statusCode = 400;
+      res.send("There was a problem with your request.");
+    }
   }
 });
 
@@ -97,18 +105,12 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
     for (let prop in edits) {
       switch (prop) {
         case "start_date":
-          if (
-            typeof edits[prop] === "string" ||
-            typeof edits[prop] === "undefined"
-          ) {
+          if (typeof edits[prop] === "string" || edits[prop] === null) {
             currEntry[prop] = edits[prop];
           }
           break;
         case "finish_date":
-          if (
-            typeof edits[prop] === "string" ||
-            typeof edits[prop] === "undefined"
-          ) {
+          if (typeof edits[prop] === "string" || edits[prop] === null) {
             currEntry[prop] = edits[prop];
           }
           break;
@@ -145,16 +147,13 @@ app.patch("/entries/:entryId", (req: Request, res: Response) => {
         case "user_rating":
           if (
             (typeof edits[prop] === "number" && edits[prop] <= 10) ||
-            typeof edits[prop] === "undefined"
+            edits[prop] === null
           ) {
             currEntry[prop] = edits[prop];
           }
           break;
         case "review":
-          if (
-            typeof edits[prop] === "string" ||
-            typeof edits[prop] === "undefined"
-          ) {
+          if (typeof edits[prop] === "string" || edits[prop] === null) {
             currEntry[prop] = edits[prop];
           }
           break;
