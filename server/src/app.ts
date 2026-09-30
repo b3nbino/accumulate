@@ -38,16 +38,31 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/entries", async (req: Request, res: Response) => {
   // Serve entries
-  let entries = await getEntries();
-  res.json(entries);
+  try {
+    let entries = await getEntries();
+    res.statusCode = 200;
+    res.json(entries);
+  } catch (e) {
+    console.error(e);
+    res.statusCode = 400;
+    res.send("Failed to get entries.");
+    return;
+  }
 });
 
 app.get("/entries/:entryId", async (req: Request, res: Response) => {
   // Serve a single entry
-
-  let entryId = Number(req.params.entryId);
-  let entry = await getEntry(entryId);
-  res.json(entry);
+  try {
+    let entryId = Number(req.params.entryId);
+    let entry = await getEntry(entryId);
+    res.statusCode = 200;
+    res.json(entry);
+  } catch (e) {
+    console.error(e);
+    res.statusCode = 400;
+    res.send("Failed to get entry.");
+    return;
+  }
 });
 
 app.post("/entries", async (req: Request, res: Response) => {
