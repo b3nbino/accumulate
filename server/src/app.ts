@@ -9,8 +9,7 @@ import express, {
 } from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
-import { ENTRIES } from "./data.ts";
-import { isValidNewEntry } from "./helpers/isValidNewEntry.js";
+import { isValidNewEntry } from "./utils/isValidNewEntry.ts";
 
 // Types
 import type {
@@ -23,12 +22,13 @@ import {
   deleteEntry,
   getEntries,
   getEntry,
+  updateEntry,
 } from "./services/pgEntries.ts";
 
 const app: Express = express();
 const PORT = 3000;
 
-app.use(morgan("tiny"));
+app.use(morgan("tiny")); // LOGGING
 app.use(bodyParser.json());
 
 app.get("/", (req: Request, res: Response) => {
@@ -38,16 +38,31 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/entries", async (req: Request, res: Response) => {
   // Serve entries
-  let entries = await getEntries();
-  res.json(entries);
+  try {
+    let entries = await getEntries();
+    res.statusCode = 200;
+    res.json(entries);
+  } catch (e) {
+    console.error(e);
+    res.statusCode = 400;
+    res.send("Failed to get entries.");
+    return;
+  }
 });
 
 app.get("/entries/:entryId", async (req: Request, res: Response) => {
   // Serve a single entry
-
-  let entryId = Number(req.params.entryId);
-  let entry = await getEntry(entryId);
-  res.json(entry);
+  try {
+    let entryId = Number(req.params.entryId);
+    let entry = await getEntry(entryId);
+    res.statusCode = 200;
+    res.json(entry);
+  } catch (e) {
+    console.error(e);
+    res.statusCode = 400;
+    res.send("Failed to get entry.");
+    return;
+  }
 });
 
 app.post("/entries", async (req: Request, res: Response) => {
@@ -93,91 +108,25 @@ app.post("/entries", async (req: Request, res: Response) => {
   }
 });
 
-app.patch("/entries/:entryId", (req: Request, res: Response) => {
+app.patch("/entries/:entryId", async (req: Request, res: Response) => {
   let entryId: number = Number(req.params.entryId);
   let edits: PartialEntryType = req.body;
-  let currEntry: EntryType | undefined = ENTRIES.find(
-    (entry) => entry.id === entryId,
-  );
-  const MAX_SAFE_INTEGER = 9007199254740991;
+  edits.last_edited_date = new Date().toJSON();
 
-  if (currEntry) {
-    for (let prop in edits) {
-      switch (prop) {
-        case "start_date":
-          if (typeof edits[prop] === "string" || edits[prop] === null) {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        case "finish_date":
-          if (typeof edits[prop] === "string" || edits[prop] === null) {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        case "status":
-          if (
-            edits[prop] === "completed" ||
-            edits[prop] === "dropped" ||
-            edits[prop] === "on-hold" ||
-            edits[prop] === "plan to watch" ||
-            edits[prop] === "watching"
-          ) {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        case "progress":
-          if (
-            typeof edits[prop] === "number" &&
-            edits[prop] < MAX_SAFE_INTEGER
-          ) {
-            if (
-              "total_length" in currEntry &&
-              typeof currEntry.total_length === "number" &&
-              edits[prop] <= currEntry.total_length &&
-              edits[prop] >= 0
-            ) {
-              currEntry[prop] = edits[prop];
-            } else {
-              res.statusCode = 400;
-              res.send("Cannot update entry.");
-              return;
-            }
-          }
-          break;
-        case "user_rating":
-          if (
-            (typeof edits[prop] === "number" && edits[prop] <= 10) ||
-            edits[prop] === null
-          ) {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        case "review":
-          if (typeof edits[prop] === "string" || edits[prop] === null) {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        case "liked":
-          if (typeof edits[prop] === "boolean") {
-            currEntry[prop] = edits[prop];
-          }
-          break;
-        default:
-        // Extra properties
-        // res.statusCode = 400;
-        // res.send("Failed to edit resource.");
-        // return;
-      }
+  try {
+    let entryUpdated = await updateEntry(entryId, edits);
+
+    if (entryUpdated) {
+      let result = await getEntry(entryId);
+      res.statusCode = 200;
+      res.json(result);
+    } else {
+      throw new Error("Entry failed to update.");
     }
-
-    currEntry.last_edited_date = new Date().toJSON();
-
-    res.statusCode = 200;
-    res.json(ENTRIES[ENTRIES.findIndex((entry) => entry.id === entryId)]);
-  } else {
-    console.log("Error updating resouce.");
-    res.statusCode = 404;
-    res.send("Failed to edit resource.");
+  } catch (e) {
+    console.error(e);
+    res.statusCode = 400;
+    res.send("There was a problem with your request.");
   }
 });
 

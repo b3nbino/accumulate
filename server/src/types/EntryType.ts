@@ -18,4 +18,4 @@ export interface EntryType {
 }
 
 export type NewEntryType = Omit<EntryType, "id">;
-export type PartialEntryType = Partial<EntryType>;
+export type PartialEntryType = Partial<EntryType> & { [key: string]: any };
