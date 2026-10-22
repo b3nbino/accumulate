@@ -16,7 +16,7 @@ body {
 
 section {
   margin: auto;
-  width: 50%;
+  max-width: 50%;
 }
 
 .entry {
@@ -211,4 +211,98 @@ div.bottom-buttons {
 #create-button {
   color: white;
   background-color: rgba(41, 41, 41);
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.modal {
+  box-sizing: border-box;
+  background-color: rgba(41, 41, 41);
+  min-width: 640px;
+  padding: 24px;
+  border-radius: 24px;
+  position: fixed;
+  top: 40px;
+  left: 32%;
+  z-index: 2;
+  overflow: auto;
+}
+
+#creation-form {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+select {
+  font-size: 16px;
+  height: 36px;
+  border-radius: 12px;
+  padding-left: 12px;
+  display: block;
+  margin-top: 6px;
+}
+
+textarea {
+  display: block;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  margin-top: 6px;
+  padding-left: 12px;
+  padding-top: 6px;
+  border-radius: 12px;
+  resize: vertical;
+}
+
+#creation-form div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 12px 0;
+}
+
+#creation-form div label + label {
+  margin-left: 24px;
+}
+
+#creation-form div.form-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+form button {
+  background-color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  border-radius: 12px;
+}
+
+#create-entry-button {
+  background-color: green;
+  color: lightgreen;
+}
+
+#cancel-entry-button {
+  background-color: rgb(68, 66, 66);
+  color: white;
+}
+
+button + button {
+  margin-left: 12px;
 }
