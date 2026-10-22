@@ -9,7 +9,7 @@ import express, {
 } from "express";
 import morgan from "morgan";
 import bodyParser from "body-parser";
-import { isValidNewEntry } from "./helpers/isValidNewEntry.js";
+import { isValidNewEntry } from "./utils/isValidNewEntry.ts";
 
 // Types
 import type {
