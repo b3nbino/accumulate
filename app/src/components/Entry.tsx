@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { EntryType } from "../types/EntryType";
+import type { EntryType, MediaType } from "../types/EntryType";
 import { getStars } from "../utils/getStars";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -26,9 +26,7 @@ export default function Entry({
   onLike,
   onIncrement,
 }: EntryProps): ReactNode {
-  function getMediaTypeColor(
-    progressType: "Movie" | "Game" | "Book" | "TV-Show",
-  ): string {
+  function getMediaTypeColor(progressType: MediaType): string {
     switch (progressType) {
       case "Movie":
         return "red";
@@ -38,6 +36,8 @@ export default function Entry({
         return "purple";
       case "TV-Show":
         return "blue";
+      default:
+        return "grey";
     }
   }
 

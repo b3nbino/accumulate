@@ -1,8 +1,10 @@
+export type MediaType = "Movie" | "Book" | "Game" | "TV-Show" | string;
+
 export interface EntryType {
   id: number;
   media_id: number;
   source: string;
-  media_type: "Movie" | "Book" | "Game" | "TV-Show";
+  media_type: MediaType;
   title: string;
   release_date: Date;
   start_date?: Date;
