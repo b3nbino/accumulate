@@ -2,7 +2,11 @@ import { useEffect, useState, type ReactNode } from "react";
 import type { EntryType } from "../types/EntryType";
 import Entry from "./Entry";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowDown,
+  faArrowUp,
+  faSquarePlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 type SortTypeType = "date" | "title" | "progress" | "type" | "rating" | "liked";
 type SortOrderType = "ascending" | "descending";
@@ -327,6 +331,11 @@ export default function Diary(): ReactNode {
         </ul>
       </div>
       {listEntries(entries)}
+      <div className="bottom-buttons">
+        <button>
+          <FontAwesomeIcon id="create-button" icon={faSquarePlus} size="4x" />
+        </button>
+      </div>
     </section>
   );
 }

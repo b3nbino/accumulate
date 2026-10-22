@@ -201,3 +201,14 @@ nav a {
 .spacer {
   border-left: 2px solid rgb(68, 66, 66);
 }
+
+div.bottom-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+#create-button {
+  color: white;
+  background-color: rgba(41, 41, 41);
+}
