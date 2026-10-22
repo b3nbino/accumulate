@@ -9,7 +9,7 @@ const CLIENT_CONFIG = {
 export default async function pgQuery(query, ...parameters) {
   let pg = await new Client(CLIENT_CONFIG).connect();
   try {
-    console.log(query, parameters);
+    console.log(query, parameters); // LOGGING
     let result = await pg.query(query, parameters);
     return result;
   } catch (e) {

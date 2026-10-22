@@ -28,7 +28,7 @@ import {
 const app: Express = express();
 const PORT = 3000;
 
-app.use(morgan("tiny"));
+app.use(morgan("tiny")); // LOGGING
 app.use(bodyParser.json());
 
 app.get("/", (req: Request, res: Response) => {
