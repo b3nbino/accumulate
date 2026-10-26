@@ -279,12 +279,10 @@ export default function Diary(): ReactNode {
 
   function showCreationModal() {
     setDisplayCreationModal(true);
-    console.log("shown");
   }
 
   function hideCreationModal() {
     setDisplayCreationModal(false);
-    console.log("hidden");
   }
 
   return (

@@ -18,3 +18,5 @@ export interface EntryType {
   review?: string;
   liked: boolean;
 }
+
+export type PartialEntry = Partial<EntryType>;
