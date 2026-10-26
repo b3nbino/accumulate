@@ -439,7 +439,6 @@ export default function Diary(): ReactNode {
           </div>
         </form>
       </section>
-
       <div className="bottom-buttons">
         <button onClick={() => showCreationModal()}>
           <FontAwesomeIcon id="create-button" icon={faSquarePlus} size="4x" />

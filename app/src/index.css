@@ -6,6 +6,10 @@
   list-style-type: none;
 }
 
+button {
+  background: none;
+}
+
 body {
   background-color: rgb(41, 40, 40);
   color: white;
@@ -204,13 +208,19 @@ nav a {
 
 div.bottom-buttons {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  justify-self: center;
+  width: 25%;
+  border-radius: 24px;
   padding: 24px 0;
+  position: sticky;
+  bottom: 20px;
+  background-color: rgba(68, 68, 68, 0.658);
 }
 
 #create-button {
   color: white;
-  background-color: rgba(41, 41, 41);
 }
 
 .overlay {
