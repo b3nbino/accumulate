@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import type { PartialEntry, StatusType } from "../types/EntryType";
 
 interface CreateEntryModalProps {
   displayCreationModal: boolean;
@@ -9,7 +10,20 @@ export default function CreateEntryModal({
   displayCreationModal,
   hideCreationModal,
 }: CreateEntryModalProps) {
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<{
+    title: string;
+    media_type: string;
+    release_date: string;
+    start_date: string;
+    finish_date: string;
+    progress_type: string;
+    total_length: number;
+    progress: number;
+    status: StatusType;
+    user_rating: number;
+    review: string;
+    liked: boolean;
+  }>({
     title: "",
     media_type: "",
     release_date: "",
@@ -18,11 +32,52 @@ export default function CreateEntryModal({
     progress_type: "",
     total_length: 0,
     progress: 0,
-    status: "Watching",
+    status: "watching",
     user_rating: 0,
     review: "",
     liked: false,
   });
+
+  async function handleSubmit(event: React.SubmitEvent) {
+    event.preventDefault();
+    hideCreationModal();
+
+    const createdEntry: PartialEntry = {
+      media_id: Math.floor(Math.random() * 999999) + 1,
+      source: "Custom",
+      media_type: formValues.media_type,
+      title: formValues.title,
+      release_date: new Date(formValues.release_date),
+      start_date: new Date(formValues.start_date),
+      finish_date: new Date(formValues.finish_date),
+      status: formValues.status,
+      progress: formValues.progress,
+      total_length: formValues.total_length,
+      progress_type: formValues.progress_type,
+      user_rating: formValues.user_rating || undefined,
+      review: formValues.review || undefined,
+      liked: formValues.liked,
+    };
+
+    try {
+      console.log("sending...");
+      const result = await fetch("/entries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(createdEntry),
+      });
+      console.log(result);
+      if (result.status === 201) {
+        console.log("entry created");
+      } else {
+        console.log("failed to create entry");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
   return (
     <>
@@ -45,7 +100,7 @@ export default function CreateEntryModal({
           id="creation-form"
           action="/entries"
           method="post"
-          onSubmit={(event) => event.preventDefault()}
+          onSubmit={handleSubmit}
         >
           <div>
             <label htmlFor="title">
@@ -184,15 +239,15 @@ export default function CreateEntryModal({
                 onChange={(event) => {
                   setFormValues({
                     ...formValues,
-                    ...{ status: event.target.value },
+                    ...{ status: event.target.value as StatusType },
                   });
                 }}
               >
-                <option value="watching">Watching</option>
-                <option value="completed">Completed</option>
-                <option value="plan to watch">Plan to Watch</option>
-                <option value="on-hold">On-hold</option>
-                <option value="dropped">Dropped</option>
+                <option value="watching">watching</option>
+                <option value="completed">completed</option>
+                <option value="plan to watch">plan to Watch</option>
+                <option value="on-hold">on-hold</option>
+                <option value="dropped">dropped</option>
               </select>
             </label>
             <label htmlFor="rating">

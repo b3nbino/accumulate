@@ -1,4 +1,10 @@
 export type MediaType = "Movie" | "Book" | "Game" | "TV-Show" | string;
+export type StatusType =
+  | "watching"
+  | "completed"
+  | "plan to watch"
+  | "on-hold"
+  | "dropped";
 
 export interface EntryType {
   id: number;
@@ -10,7 +16,7 @@ export interface EntryType {
   start_date?: Date;
   finish_date?: Date;
   last_edited_date: Date;
-  status: "watching" | "completed" | "plan to watch" | "on-hold" | "dropped";
+  status: StatusType;
   progress: number;
   total_length: number;
   progress_type: string;
