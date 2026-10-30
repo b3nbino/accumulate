@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface CreateEntryModalProps {
   displayCreationModal: boolean;
@@ -99,6 +99,7 @@ export default function CreateEntryModal({
               <input
                 type="date"
                 id="startDate"
+                min={formValues.release_date}
                 value={formValues.start_date}
                 onChange={(event) => {
                   setFormValues({
@@ -113,6 +114,7 @@ export default function CreateEntryModal({
               <input
                 type="date"
                 id="finishDate"
+                min={formValues.start_date}
                 value={formValues.finish_date}
                 onChange={(event) => {
                   setFormValues({
