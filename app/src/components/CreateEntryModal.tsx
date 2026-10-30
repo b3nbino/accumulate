@@ -65,10 +65,11 @@ export default function CreateEntryModal({
           </div>
           <div>
             <label htmlFor="mediaType">
-              Media Type
+              Format
               <input
                 type="text"
                 id="mediaType"
+                placeholder="TV-Show"
                 value={formValues.media_type}
                 onChange={(event) => {
                   setFormValues({
@@ -81,7 +82,7 @@ export default function CreateEntryModal({
           </div>
           <div>
             <label htmlFor="releaseDate">
-              Release Date
+              Released
               <input
                 type="date"
                 id="releaseDate"
@@ -95,7 +96,7 @@ export default function CreateEntryModal({
               />
             </label>
             <label htmlFor="startDate">
-              Start Date
+              Started
               <input
                 type="date"
                 id="startDate"
@@ -110,7 +111,7 @@ export default function CreateEntryModal({
               />
             </label>
             <label htmlFor="finishDate">
-              Finish Date
+              Finished
               <input
                 type="date"
                 id="finishDate"
@@ -126,47 +127,48 @@ export default function CreateEntryModal({
             </label>
           </div>
           <div>
-            <label htmlFor="progressType">
-              Progress Type
+            <label htmlFor="progress">
+              Progress
+              <div id="progress-div">
+                <input
+                  type="number"
+                  id="progress"
+                  max={formValues.total_length}
+                  min={0}
+                  value={formValues.progress}
+                  onChange={(event) => {
+                    setFormValues({
+                      ...formValues,
+                      ...{ progress: Number(event.target.value) },
+                    });
+                  }}
+                />
+                <span id="progress-divider">/</span>
+                <input
+                  type="number"
+                  id="total-length"
+                  min={0}
+                  value={formValues.total_length}
+                  onChange={(event) => {
+                    setFormValues({
+                      ...formValues,
+                      ...{ total_length: Number(event.target.value) },
+                    });
+                  }}
+                />
+              </div>
+            </label>
+            <label htmlFor="progress-type">
+              Type
               <input
                 type="text"
-                id="progressType"
+                id="progress-type"
+                placeholder="episodes"
                 value={formValues.progress_type}
                 onChange={(event) => {
                   setFormValues({
                     ...formValues,
                     ...{ progress_type: event.target.value },
-                  });
-                }}
-              />
-            </label>
-            <label htmlFor="totalLength">
-              Max Progress
-              <input
-                type="number"
-                id="totalLength"
-                min={0}
-                value={formValues.total_length}
-                onChange={(event) => {
-                  setFormValues({
-                    ...formValues,
-                    ...{ total_length: Number(event.target.value) },
-                  });
-                }}
-              />
-            </label>
-            <label htmlFor="progress">
-              Progress
-              <input
-                type="number"
-                id="progress"
-                max={formValues.total_length}
-                min={0}
-                value={formValues.progress}
-                onChange={(event) => {
-                  setFormValues({
-                    ...formValues,
-                    ...{ progress: Number(event.target.value) },
                   });
                 }}
               />
@@ -194,7 +196,7 @@ export default function CreateEntryModal({
               </select>
             </label>
             <label htmlFor="rating">
-              Rating (x/10)
+              Rating
               <input
                 type="number"
                 id="rating"
