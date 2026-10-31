@@ -84,7 +84,7 @@ app.post("/entries", async (req: Request, res: Response) => {
       start_date: body?.start_date || null,
       finish_date: body?.finish_date || null,
       status: body.status,
-      progress: body?.progress || null,
+      progress: body?.progress,
       total_length: body.total_length,
       progress_type: body.progress_type,
       user_rating: body?.user_rating || null,

@@ -97,8 +97,8 @@ export default function Entry({
           <button
             className="add"
             onClick={() => {
-              if (progress && progress < total_length) {
-                onIncrement(id, progress ? progress + 1 : 1);
+              if (progress < total_length) {
+                onIncrement(id, progress + 1);
               }
             }}
             disabled={progress === total_length}

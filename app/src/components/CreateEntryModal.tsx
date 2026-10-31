@@ -67,6 +67,8 @@ export default function CreateEntryModal({
       liked: formValues.liked,
     };
 
+    console.log(JSON.stringify(createdEntry));
+
     try {
       console.log("sending");
       const response = await fetch("/entries", {
@@ -121,6 +123,7 @@ export default function CreateEntryModal({
                     ...{ title: event.target.value },
                   });
                 }}
+                required
               />
             </label>
           </div>
@@ -138,6 +141,7 @@ export default function CreateEntryModal({
                     ...{ media_type: event.target.value },
                   });
                 }}
+                required
               />
             </label>
           </div>
@@ -154,6 +158,7 @@ export default function CreateEntryModal({
                     ...{ release_date: event.target.value },
                   });
                 }}
+                required
               />
             </label>
             <label htmlFor="startDate">
@@ -232,6 +237,7 @@ export default function CreateEntryModal({
                     ...{ progress_type: event.target.value },
                   });
                 }}
+                required
               />
             </label>
           </div>
