@@ -1,29 +1,31 @@
 import React, { useState } from "react";
-import type { PartialEntry, StatusType } from "../types/EntryType";
+import type { NewEntryRequest, StatusType } from "../types/EntryType";
 
 interface CreateEntryModalProps {
   displayCreationModal: boolean;
   hideCreationModal: () => void;
 }
 
+interface FormValuesType {
+  title: string;
+  media_type: string;
+  release_date: string;
+  start_date: string;
+  finish_date: string;
+  progress_type: string;
+  total_length: number;
+  progress: number;
+  status: StatusType;
+  user_rating: number;
+  review: string;
+  liked: boolean;
+}
+
 export default function CreateEntryModal({
   displayCreationModal,
   hideCreationModal,
 }: CreateEntryModalProps) {
-  const [formValues, setFormValues] = useState<{
-    title: string;
-    media_type: string;
-    release_date: string;
-    start_date: string;
-    finish_date: string;
-    progress_type: string;
-    total_length: number;
-    progress: number;
-    status: StatusType;
-    user_rating: number;
-    review: string;
-    liked: boolean;
-  }>({
+  const [formValues, setFormValues] = useState<FormValuesType>({
     title: "",
     media_type: "",
     release_date: "",
@@ -42,14 +44,20 @@ export default function CreateEntryModal({
     event.preventDefault();
     hideCreationModal();
 
-    const createdEntry: PartialEntry = {
+    const createdEntry: NewEntryRequest = {
       media_id: Math.floor(Math.random() * 999999) + 1,
       source: "Custom",
       media_type: formValues.media_type,
       title: formValues.title,
-      release_date: new Date(formValues.release_date),
-      start_date: new Date(formValues.start_date),
-      finish_date: new Date(formValues.finish_date),
+      release_date: new Date(formValues.release_date).toISOString(),
+      start_date:
+        formValues.start_date ?
+          new Date(formValues.start_date).toISOString()
+        : undefined,
+      finish_date:
+        formValues.finish_date ?
+          new Date(formValues.finish_date).toISOString()
+        : undefined,
       status: formValues.status,
       progress: formValues.progress,
       total_length: formValues.total_length,
@@ -60,19 +68,17 @@ export default function CreateEntryModal({
     };
 
     try {
-      console.log("sending...");
-      const result = await fetch("/entries", {
+      console.log("sending");
+      const response = await fetch("/entries", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(createdEntry),
       });
-      console.log(result);
-      if (result.status === 201) {
-        console.log("entry created");
-      } else {
-        console.log("failed to create entry");
+
+      if (response.status !== 201) {
+        console.log("failed to create new entry");
       }
     } catch (e) {
       console.error(e);

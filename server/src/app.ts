@@ -16,7 +16,7 @@ import type {
   EntryType,
   PartialEntryType,
   NewEntryType,
-} from "./types/EntryType.js";
+} from "./types/EntryType.ts";
 import {
   createEntry,
   deleteEntry,
@@ -67,6 +67,7 @@ app.get("/entries/:entryId", async (req: Request, res: Response) => {
 
 app.post("/entries", async (req: Request, res: Response) => {
   // Validate request bodies, then add them to entries
+  console.log("Recieved post request");
   let body: NewEntryType = req.body;
 
   if (isValidNewEntry(body)) {
@@ -105,6 +106,9 @@ app.post("/entries", async (req: Request, res: Response) => {
       res.statusCode = 400;
       res.send("There was a problem with your request.");
     }
+  } else {
+    res.statusCode = 400;
+    res.send("Failed to create new entry. Invalid request.");
   }
 });
 

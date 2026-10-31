@@ -25,4 +25,21 @@ export interface EntryType {
   liked: boolean;
 }
 
+export interface NewEntryRequest {
+  media_id: number;
+  source: string;
+  media_type: MediaType;
+  title: string;
+  release_date: string;
+  start_date?: string;
+  finish_date?: string;
+  status: StatusType;
+  progress: number;
+  total_length: number;
+  progress_type: string;
+  user_rating?: number;
+  review?: string;
+  liked: boolean;
+}
+
 export type PartialEntry = Partial<EntryType>;

@@ -15,7 +15,8 @@ export function isValidNewEntry(newEntry: unknown): newEntry is NewEntryType {
     (newEntry.media_type === "Book" ||
       newEntry.media_type === "Movie" ||
       newEntry.media_type === "Game" ||
-      newEntry.media_type === "TV-Show") &&
+      newEntry.media_type === "TV-Show" ||
+      typeof newEntry.media_type === "string") &&
     "title" in newEntry &&
     typeof newEntry.title === "string" &&
     "release_date" in newEntry &&
@@ -24,6 +25,7 @@ export function isValidNewEntry(newEntry: unknown): newEntry is NewEntryType {
     (newEntry.status === "watching" ||
       newEntry.status === "completed" ||
       newEntry.status === "plan to watch" ||
+      newEntry.status === "on-hold" ||
       newEntry.status === "dropped") &&
     "total_length" in newEntry &&
     typeof newEntry.total_length === "number" &&

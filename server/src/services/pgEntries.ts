@@ -61,6 +61,7 @@ export async function createEntry(newEntry: NewEntryType): Promise<boolean> {
     );
     return result.rowCount === 1;
   } catch (e) {
+    console.error(e);
     throw new Error("Failed to create a new entry.");
   }
 }

@@ -1,5 +1,20 @@
-INSERT INTO entries VALUES(
-  1,
+INSERT INTO entries (
+      media_id,
+      source,
+      media_type,
+      title,
+      release_date,
+      start_date,
+      finish_date,
+      last_edited_date,
+      status,
+      progress,
+      total_length,
+      progress_type,
+      user_rating,
+      review,
+      liked
+) VALUES(
   1,
   '',
   'Movie',
@@ -18,7 +33,6 @@ INSERT INTO entries VALUES(
 ),
 (
   2,
-  2,
   '',
   'Book',
   'Neuromancer',
@@ -35,7 +49,6 @@ INSERT INTO entries VALUES(
   false
 ),
 (
-  3,
   23,
   '',
   'Game',
@@ -53,7 +66,6 @@ INSERT INTO entries VALUES(
   true
 ),
 (
-  4,
   14,
   '',
   'TV-Show',
