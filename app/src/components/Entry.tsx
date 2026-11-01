@@ -1,12 +1,17 @@
+// Object imports
 import type { ReactNode } from "react";
-import type { EntryType, MediaType } from "../types/EntryType";
-import { getStars } from "../utils/getStars";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquarePlus,
   faHeart as hollowHeart,
 } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+// Function imports
+import { getStars } from "../utils/getStars";
+
+// Type imports
+import type { EntryType, MediaType } from "../types/EntryType";
 
 interface EntryProps extends EntryType {
   onLike: (id: number, liked: boolean) => void;
@@ -26,8 +31,9 @@ export default function Entry({
   onLike,
   onIncrement,
 }: EntryProps): ReactNode {
-  function getMediaTypeColor(progressType: MediaType): string {
-    switch (progressType) {
+  function getMediaTypeColor(mediaType: MediaType): string {
+    // Customize the color of the media type tag
+    switch (mediaType) {
       case "Movie":
         return "red";
       case "Book":
@@ -41,51 +47,49 @@ export default function Entry({
     }
   }
 
+  function createDateElement(date: Date): ReactNode {
+    return date
+      .toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      })
+      .split(" ")
+      .map((part: string) => <p key={part}>{part}</p>);
+  }
+
   return (
-    <li className="entry" key={id}>
-      <div className="last-edited-date">
-        {last_edited_date
-          .toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          })
-          .split(" ")
-          .map((part: string) => (
-            <p key={part}>{part}</p>
-          ))}
+    <li className="entry" id={`entry-${id}`} key={id}>
+      <div className="list-entry-date">
+        {createDateElement(last_edited_date)}
       </div>
-      <div className="entry-thumb">
+      <div className="list-entry-thumb">
         <img src="./public/placeholder.jpg" alt="" />
       </div>
-      <div className="diary-middle">
-        <div className="header">
-          <p className="title">{title}</p>
+      <div className="list-entry-middle">
+        <div className="list-entry-header">
+          <p className="list-entry-title">{title}</p>
           <p className={`type-${media_type}`}>{media_type}</p>
         </div>
         <div className="progress-bar">
           <div
+            className="list-entry-progress"
             style={{
-              height: "32px",
               width: `${Math.floor(((progress ?? 0) / total_length) * 100)}%`,
-              border: "2px solid white",
-              borderTopLeftRadius: "24px",
-              borderBottomLeftRadius: "24px",
               borderTopRightRadius: `${progress === total_length ? "24px" : "6px"}`,
               borderBottomRightRadius: `${progress === total_length ? "24px" : "6px"}`,
-              position: "relative",
               backgroundColor: `${getMediaTypeColor(media_type)}`,
             }}
           ></div>
-          <p className="progress">
+          <p className="list-entry-progress-amount">
             {progress}/{total_length} {progress_type}
           </p>
         </div>
       </div>
-      <div className="diary-right">
+      <div className="list-entry-right">
         <p>{getStars(user_rating)}</p>
-        <div className="buttons">
+        <div className="list-entry-buttons">
           <button
-            className="like"
+            className="list-entry-like"
             onClick={() => {
               onLike(id, !liked);
             }}
@@ -95,7 +99,7 @@ export default function Entry({
             : <FontAwesomeIcon icon={hollowHeart} size="3x" />}
           </button>
           <button
-            className="add"
+            className="list-entry-add"
             onClick={() => {
               if (progress < total_length) {
                 onIncrement(id, progress + 1);
