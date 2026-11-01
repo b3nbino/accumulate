@@ -198,11 +198,11 @@ export default function Diary(): ReactNode {
       case "rating":
         if (newOrder === "ascending") {
           entriesCopy.sort((a, b) => {
-            if (a.user_rating === undefined) {
+            if (a.user_rating === null) {
               a.user_rating = -1;
             }
 
-            if (b.user_rating === undefined) {
+            if (b.user_rating === null) {
               b.user_rating = -1;
             }
 
@@ -216,11 +216,11 @@ export default function Diary(): ReactNode {
           });
         } else {
           entriesCopy.sort((a, b) => {
-            if (a.user_rating === undefined) {
+            if (a.user_rating === null) {
               a.user_rating = -1;
             }
 
-            if (b.user_rating === undefined) {
+            if (b.user_rating === null) {
               b.user_rating = -1;
             }
 

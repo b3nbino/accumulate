@@ -20,7 +20,7 @@ export interface EntryType {
   progress: number;
   total_length: number;
   progress_type: string;
-  user_rating?: number;
+  user_rating: number | null;
   review?: string;
   liked: boolean;
 }
