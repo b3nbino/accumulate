@@ -169,6 +169,15 @@ header h1 {
   margin-bottom: 12px;
 }
 
+footer {
+  width: 50%;
+  margin: auto;
+  height: 120px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  background-color: rgb(68, 66, 66);
+}
+
 nav {
   text-align: end;
 }

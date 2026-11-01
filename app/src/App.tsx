@@ -11,6 +11,7 @@ function App() {
           </nav>
         </header>
         <Diary></Diary>
+        <footer></footer>
       </main>
     </>
   );
