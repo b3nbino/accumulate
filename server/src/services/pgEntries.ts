@@ -42,7 +42,7 @@ export async function createEntry(newEntry: NewEntryType): Promise<boolean> {
       user_rating,
       review,
       liked
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15);`,
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *;`,
       newEntry.media_id,
       newEntry.source,
       newEntry.media_type,
@@ -59,7 +59,7 @@ export async function createEntry(newEntry: NewEntryType): Promise<boolean> {
       newEntry.review,
       newEntry.liked,
     );
-    return result.rowCount === 1;
+    return result.rows[0];
   } catch (e) {
     console.error(e);
     throw new Error("Failed to create a new entry.");
