@@ -12,7 +12,11 @@ import bodyParser from "body-parser";
 import { isValidNewEntry } from "./utils/isValidNewEntry.ts";
 
 // Types
-import type { PartialEntryType, NewEntryType } from "./types/EntryType.ts";
+import type {
+  PartialEntryType,
+  NewEntryType,
+  EntryType,
+} from "./types/EntryType.ts";
 import { psql } from "./services/pgEntries.ts";
 
 // Create server object
@@ -31,7 +35,7 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/entries", async (req: Request, res: Response) => {
   // Serve entries
   try {
-    let entries = await psql.entries.getEntries();
+    const entries: EntryType[] = await psql.entries.getEntries();
 
     if (entries.length > 0) {
       res.statusCode = 200;
@@ -40,7 +44,7 @@ app.get("/entries", async (req: Request, res: Response) => {
       res.statusCode = 200;
       res.json([]);
     }
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
     res.statusCode = 500;
     res.send("Something went wrong.");
@@ -52,8 +56,8 @@ app.get("/entries", async (req: Request, res: Response) => {
 app.get("/entries/:entryId", async (req: Request, res: Response) => {
   // Serve a single entry
   try {
-    let entryId = Number(req.params.entryId);
-    let entry = await psql.entries.getEntry(entryId);
+    const entryId: number = Number(req.params.entryId);
+    const entry: EntryType = await psql.entries.getEntry(entryId);
 
     if (entry !== undefined) {
       res.statusCode = 200;
@@ -62,7 +66,7 @@ app.get("/entries/:entryId", async (req: Request, res: Response) => {
       res.statusCode = 404;
       res.send("Entry not found.");
     }
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
     res.statusCode = 500;
     res.send("Something went wrong.");
@@ -73,19 +77,17 @@ app.get("/entries/:entryId", async (req: Request, res: Response) => {
 
 app.post("/entries", async (req: Request, res: Response) => {
   // Create a new entry
-  let body: NewEntryType = req.body;
+  const body: NewEntryType = req.body;
 
   // Validate request body
   if (isValidNewEntry(body)) {
-    let lastEdited = new Date().toJSON();
-
-    // Extract the properties we want, which are validated, extra fields could be a security flaw
-    let entry: NewEntryType = {
+    // Extract the properties we want, which are validated, extra fields could be a vulnerability
+    const entry: NewEntryType = {
       media_id: body.media_id,
       source: body.source,
       media_type: body.media_type,
       title: body.title,
-      last_edited_date: lastEdited,
+      last_edited_date: new Date().toJSON(),
       release_date: body.release_date,
       start_date: body?.start_date || null,
       finish_date: body?.finish_date || null,
@@ -99,7 +101,7 @@ app.post("/entries", async (req: Request, res: Response) => {
     };
 
     try {
-      let createdEntry = await psql.entries.createEntry(entry);
+      const createdEntry = await psql.entries.createEntry(entry);
 
       if (createdEntry !== undefined) {
         res.statusCode = 201;
@@ -108,7 +110,7 @@ app.post("/entries", async (req: Request, res: Response) => {
         res.statusCode = 500;
         res.send("Something went wrong.");
       }
-    } catch (e) {
+    } catch (e: unknown) {
       console.error(e);
       res.statusCode = 500;
       res.send("Something went wrong.");
@@ -124,22 +126,25 @@ app.post("/entries", async (req: Request, res: Response) => {
 
 app.patch("/entries/:entryId", async (req: Request, res: Response) => {
   // Update an entry
-  let entryId: number = Number(req.params.entryId);
+  const entryId: number = Number(req.params.entryId);
   let edits: PartialEntryType = req.body;
   edits.last_edited_date = new Date().toJSON();
 
   try {
-    let entryUpdated: boolean = await psql.entries.updateEntry(entryId, edits);
+    const entryUpdated: boolean = await psql.entries.updateEntry(
+      entryId,
+      edits,
+    );
 
     if (entryUpdated) {
-      let result = await psql.entries.getEntry(entryId);
+      const result: EntryType = await psql.entries.getEntry(entryId);
       res.statusCode = 200;
       res.json(result);
     } else {
       res.statusCode = 404;
       res.send("Entry not found.");
     }
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
     res.statusCode = 500;
     res.send("Something went wrong.");
@@ -151,8 +156,8 @@ app.patch("/entries/:entryId", async (req: Request, res: Response) => {
 app.delete("/entries/:entryId", async (req: Request, res: Response) => {
   // Delete an entry
   try {
-    let entryId: number = Number(req.params.entryId);
-    let deleted: boolean = await psql.entries.deleteEntry(entryId);
+    const entryId: number = Number(req.params.entryId);
+    const deleted: boolean = await psql.entries.deleteEntry(entryId);
 
     if (deleted) {
       res.statusCode = 204;
@@ -161,7 +166,7 @@ app.delete("/entries/:entryId", async (req: Request, res: Response) => {
       res.statusCode = 404;
       res.send("Entry not found.");
     }
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
     res.statusCode = 500;
     res.send("Something went wrong.");
