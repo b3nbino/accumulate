@@ -13,13 +13,7 @@ import { isValidNewEntry } from "./utils/isValidNewEntry.ts";
 
 // Types
 import type { PartialEntryType, NewEntryType } from "./types/EntryType.ts";
-import {
-  createEntry,
-  deleteEntry,
-  getEntries,
-  getEntry,
-  updateEntry,
-} from "./services/pgEntries.ts";
+import { psql } from "./services/pgEntries.ts";
 
 // Create server object
 const app: Express = express();
@@ -37,7 +31,7 @@ app.get("/", (req: Request, res: Response) => {
 app.get("/entries", async (req: Request, res: Response) => {
   // Serve entries
   try {
-    let entries = await getEntries();
+    let entries = await psql.entries.getEntries();
 
     if (entries.length > 0) {
       res.statusCode = 200;
@@ -59,7 +53,7 @@ app.get("/entries/:entryId", async (req: Request, res: Response) => {
   // Serve a single entry
   try {
     let entryId = Number(req.params.entryId);
-    let entry = await getEntry(entryId);
+    let entry = await psql.entries.getEntry(entryId);
 
     if (entry !== undefined) {
       res.statusCode = 200;
@@ -105,7 +99,7 @@ app.post("/entries", async (req: Request, res: Response) => {
     };
 
     try {
-      let createdEntry = await createEntry(entry);
+      let createdEntry = await psql.entries.createEntry(entry);
 
       if (createdEntry !== undefined) {
         res.statusCode = 201;
@@ -135,10 +129,10 @@ app.patch("/entries/:entryId", async (req: Request, res: Response) => {
   edits.last_edited_date = new Date().toJSON();
 
   try {
-    let entryUpdated: boolean = await updateEntry(entryId, edits);
+    let entryUpdated: boolean = await psql.entries.updateEntry(entryId, edits);
 
     if (entryUpdated) {
-      let result = await getEntry(entryId);
+      let result = await psql.entries.getEntry(entryId);
       res.statusCode = 200;
       res.json(result);
     } else {
@@ -158,7 +152,7 @@ app.delete("/entries/:entryId", async (req: Request, res: Response) => {
   // Delete an entry
   try {
     let entryId: number = Number(req.params.entryId);
-    let deleted: boolean = await deleteEntry(entryId);
+    let deleted: boolean = await psql.entries.deleteEntry(entryId);
 
     if (deleted) {
       res.statusCode = 204;
