@@ -17,7 +17,7 @@ import type {
   NewEntryType,
   EntryType,
 } from "./types/EntryType.ts";
-import { psql } from "./services/pgEntries.ts";
+import { psql } from "./services/pgLayer.ts";
 
 // Create server object
 const app: Express = express();

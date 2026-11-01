@@ -8,8 +8,9 @@ import pgQuery from "../utils/pgQuery.js";
 export const psql = {
   entries: {
     async getEntries(): Promise<EntryType[]> {
+      // Returns all entries
       try {
-        let result = await pgQuery("SELECT * FROM entries;");
+        const result = await pgQuery("SELECT * FROM entries;");
         return result.rows;
       } catch (e) {
         console.error(e);
@@ -18,8 +19,9 @@ export const psql = {
     },
 
     async getEntry(entryId: number): Promise<EntryType> {
+      // Returns a single entry
       try {
-        let result = await pgQuery(
+        const result = await pgQuery(
           "SELECT * FROM entries where id = $1;",
           entryId,
         );
@@ -30,9 +32,10 @@ export const psql = {
       }
     },
 
-    async createEntry(newEntry: NewEntryType): Promise<boolean> {
+    async createEntry(newEntry: NewEntryType): Promise<EntryType> {
+      // Creates an entry and returns the newly created object
       try {
-        let result = await pgQuery(
+        const result = await pgQuery(
           `INSERT INTO entries (
             media_id,
             source,
@@ -74,8 +77,9 @@ export const psql = {
     },
 
     async deleteEntry(entryId: number): Promise<boolean> {
+      // Deletes an entry
       try {
-        let result = await pgQuery(
+        const result = await pgQuery(
           "DELETE FROM entries where id = $1;",
           entryId,
         );
@@ -86,7 +90,11 @@ export const psql = {
       }
     },
 
-    async updateEntry(entryId: number, updates: PartialEntryType) {
+    async updateEntry(
+      entryId: number,
+      updates: PartialEntryType,
+    ): Promise<boolean> {
+      // Updates an entry
       try {
         // Dynamically create set clause for variable length updates.
         const keys = Object.keys(updates);
