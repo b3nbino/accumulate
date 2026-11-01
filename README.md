@@ -74,13 +74,44 @@ To check out the current progress for yourself (assuming you have Node & NPM, an
 
 ## Next Steps
 
+- Clean-up my Diary and CreateEntryModal code!!!
+  - Add comments
+  - Review typing
+  - Use const more
+  - More granular React components
+- More functions
+  - Extract new entry data transformation into a function on server
+  - Could make function to extract newEntry properties for createEntry or use dynamic creation like with updateEntry (Should be safe enough when using Zod)
+  - Add returning statement to patch endpoint queries, instead of making an extra call (see createEntry)
+- Add creation and deletion through app
+  - Add button at the bottom of the page
+    - Modal popup form for creation
+    - Submission function
+    - Reset function for when closing modal
+  - Details modal for existing entries
+    - Let's users update in detail
+      - Changing the name/progress/progress type/start/finish/status/length
+      - Rating and reviewing
+    - Entry deletion
+- Add frontend validation
+- Consider reworking entry type property names
+  - Also, use more general terms. Not everything is watching
+  - De-capitalize media types
+- Handle zero entries case on frontend
+- Handle many entries case
+  - Pagination?
+  - Infinite scroll?
+  - Is it needed?
+- Update frontend to use either API response or new fetches, rather than updating directly.
+- Think about adding status to entries visually
 - Fix catch blocks to improve error handling
+  - Maybe improve the global error handler and use it to send error responses based on Error Types
 - Improve runtime validation using Zod
 - Use dotenv for app config
 - Create tests for unit, end-to-end, and maybe integration
 - Connect third party API with movies, probably TMDB
 - Improve app styling
-- Add creation and deletion through app (probably some kind of modal)
+- Custom types should be able to include a custom color choice
 
 ## Other Tools/References
 
