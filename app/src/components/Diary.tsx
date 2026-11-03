@@ -52,7 +52,7 @@ export default function Diary(): ReactNode {
     })();
   }, []);
 
-  async function handleLike(id: number, liked: boolean) {
+  async function handleLike(id: number, liked: boolean): Promise<void> {
     // Send update request
     const res = await fetch(`/entries/${id}`, {
       method: "PATCH",
@@ -63,7 +63,7 @@ export default function Diary(): ReactNode {
         liked,
       }),
     });
-    const json = await res.json();
+    const json: EntryType = await res.json();
     convertLastEdited(json);
 
     const entriesCopy = [...entries];
@@ -76,7 +76,7 @@ export default function Diary(): ReactNode {
     setEntries(entriesCopy);
   }
 
-  async function updateProgress(id: number, progress: number) {
+  async function updateProgress(id: number, progress: number): Promise<void> {
     const res = await fetch(`/entries/${id}`, {
       method: "PATCH",
       headers: {
@@ -86,11 +86,8 @@ export default function Diary(): ReactNode {
         progress,
       }),
     });
-    const json = await res.json();
-
-    if ("last_edited_date" in json) {
-      json.last_edited_date = new Date(json.last_edited_date);
-    }
+    const json: EntryType = await res.json();
+    convertLastEdited(json);
 
     const entriesCopy = [...entries];
 
