@@ -26,7 +26,7 @@ export default function Diary(): ReactNode {
     "date",
     "descending",
   ]);
-  const [displayCreationModal, setDisplayCreationModal] =
+  const [isCreationModalShown, setIsCreationModalShown] =
     useState<boolean>(false);
 
   // Effects
@@ -142,11 +142,11 @@ export default function Diary(): ReactNode {
   }
 
   function showCreationModal() {
-    setDisplayCreationModal(true);
+    setIsCreationModalShown(true);
   }
 
   function hideCreationModal() {
-    setDisplayCreationModal(false);
+    setIsCreationModalShown(false);
   }
 
   return (
@@ -208,7 +208,7 @@ export default function Diary(): ReactNode {
       {listEntries(sortedEntries)}
       <CreateEntryModal
         hideCreationModal={hideCreationModal}
-        displayCreationModal={displayCreationModal}
+        isShown={isCreationModalShown}
       ></CreateEntryModal>
       <div className="bottom-buttons">
         <button onClick={() => showCreationModal()}>

@@ -1,8 +1,11 @@
+// Imports
 import React, { useState } from "react";
+
+// Type
 import type { NewEntryRequest, StatusType } from "../types/EntryType";
 
 interface CreateEntryModalProps {
-  displayCreationModal: boolean;
+  isShown: boolean;
   hideCreationModal: () => void;
 }
 
@@ -22,7 +25,7 @@ interface FormValuesType {
 }
 
 export default function CreateEntryModal({
-  displayCreationModal,
+  isShown,
   hideCreationModal,
 }: CreateEntryModalProps) {
   const [formValues, setFormValues] = useState<FormValuesType>({
@@ -40,9 +43,25 @@ export default function CreateEntryModal({
     liked: false,
   });
 
+  function clearFormValues() {
+    setFormValues({
+      title: "",
+      media_type: "",
+      release_date: "",
+      start_date: "",
+      finish_date: "",
+      progress_type: "",
+      total_length: 0,
+      progress: 0,
+      status: "watching",
+      user_rating: 0,
+      review: "",
+      liked: false,
+    });
+  }
+
   async function handleSubmit(event: React.SubmitEvent) {
     event.preventDefault();
-    hideCreationModal();
 
     const createdEntry: NewEntryRequest = {
       media_id: Math.floor(Math.random() * 999999) + 1,
@@ -67,8 +86,6 @@ export default function CreateEntryModal({
       liked: formValues.liked,
     };
 
-    console.log(JSON.stringify(createdEntry));
-
     try {
       console.log("sending");
       const response = await fetch("/entries", {
@@ -82,6 +99,9 @@ export default function CreateEntryModal({
       if (response.status !== 201) {
         console.log("failed to create new entry");
       }
+
+      hideCreationModal();
+      clearFormValues();
     } catch (e) {
       console.error(e);
     }
@@ -94,15 +114,16 @@ export default function CreateEntryModal({
         onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
           hideCreationModal();
+          clearFormValues();
         }}
-        style={{ display: displayCreationModal ? "" : "none" }}
+        style={{ display: isShown ? "" : "none" }}
       >
         {" "}
       </div>
       <section
         id="creation-modal"
         className="modal"
-        style={{ display: displayCreationModal ? "" : "none" }}
+        style={{ display: isShown ? "" : "none" }}
       >
         <form
           id="creation-form"
@@ -300,7 +321,7 @@ export default function CreateEntryModal({
             <input
               type="checkbox"
               id="liked"
-              value={formValues.liked.toString()}
+              checked={formValues.liked}
               onChange={(event) => {
                 setFormValues({
                   ...formValues,
@@ -313,7 +334,10 @@ export default function CreateEntryModal({
             <button id="create-entry-button">Create</button>
             <button
               id="cancel-entry-button"
-              onClick={() => hideCreationModal()}
+              onClick={() => {
+                hideCreationModal();
+                clearFormValues();
+              }}
             >
               Cancel
             </button>
