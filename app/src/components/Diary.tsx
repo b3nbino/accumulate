@@ -22,8 +22,10 @@ export default function Diary(): ReactNode {
   const [sortedEntries, setSortedEntries] = useState<EntryType[]>(() => {
     return [];
   });
-  const [sortType, setSortType] = useState<SortType>("date");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("descending");
+  const [sortType, setSortType] = useState<[SortType, SortOrder]>([
+    "date",
+    "descending",
+  ]);
   const [displayCreationModal, setDisplayCreationModal] =
     useState<boolean>(false);
 
@@ -46,10 +48,14 @@ export default function Diary(): ReactNode {
   useEffect(() => {
     (async () => {
       // Sorts entries when sorting selection or entries changes
-      const newEntries = sortEntries(entries, sortType, sortOrder);
+      const newEntries: EntryType[] = sortEntries(
+        entries,
+        sortType[0],
+        sortType[1],
+      );
       setSortedEntries(newEntries);
     })();
-  }, [entries, sortType, sortOrder]);
+  }, [entries, sortType]);
 
   async function handleLike(id: number, liked: boolean): Promise<void> {
     // Send update request
@@ -102,9 +108,9 @@ export default function Diary(): ReactNode {
     let newSort: SortType;
     let newOrder: SortOrder;
 
-    if (type === sortType) {
-      newSort = sortType;
-      if (sortOrder === "ascending") {
+    if (type === sortType[0]) {
+      newSort = sortType[0];
+      if (sortType[1] === "ascending") {
         newOrder = "descending";
       } else {
         newOrder = "ascending";
@@ -114,8 +120,7 @@ export default function Diary(): ReactNode {
       newOrder = "ascending";
     }
 
-    setSortType(newSort);
-    setSortOrder(newOrder);
+    setSortType([newSort, newOrder]);
   }
 
   function listEntries(allEntrires: EntryType[]): ReactNode {
@@ -147,8 +152,8 @@ export default function Diary(): ReactNode {
         <ul id="diary-sort-options">
           <li>
             <button onClick={() => updateSort("date")}>Last Edited</button>
-            {sortType === "date" ?
-              sortOrder === "ascending" ?
+            {sortType[0] === "date" ?
+              sortType[1] === "ascending" ?
                 <FontAwesomeIcon icon={faArrowUp} size="xs" />
               : <FontAwesomeIcon icon={faArrowDown} size="xs" />
             : null}
@@ -156,24 +161,24 @@ export default function Diary(): ReactNode {
           <li className="spacer"></li>
           <li>
             <button onClick={() => updateSort("title")}>Title</button>
-            {sortType === "title" ?
-              sortOrder === "ascending" ?
+            {sortType[0] === "title" ?
+              sortType[1] === "ascending" ?
                 <FontAwesomeIcon icon={faArrowUp} size="xs" />
               : <FontAwesomeIcon icon={faArrowDown} size="xs" />
             : null}
           </li>
           <li>
             <button onClick={() => updateSort("progress")}>Progress</button>
-            {sortType === "progress" ?
-              sortOrder === "ascending" ?
+            {sortType[0] === "progress" ?
+              sortType[1] === "ascending" ?
                 <FontAwesomeIcon icon={faArrowUp} size="xs" />
               : <FontAwesomeIcon icon={faArrowDown} size="xs" />
             : null}
           </li>
           <li>
             <button onClick={() => updateSort("type")}>Type</button>
-            {sortType === "type" ?
-              sortOrder === "ascending" ?
+            {sortType[0] === "type" ?
+              sortType[1] === "ascending" ?
                 <FontAwesomeIcon icon={faArrowUp} size="xs" />
               : <FontAwesomeIcon icon={faArrowDown} size="xs" />
             : null}
@@ -181,16 +186,16 @@ export default function Diary(): ReactNode {
           <li className="spacer"></li>
           <li>
             <button onClick={() => updateSort("rating")}>Rating</button>
-            {sortType === "rating" ?
-              sortOrder === "ascending" ?
+            {sortType[0] === "rating" ?
+              sortType[1] === "ascending" ?
                 <FontAwesomeIcon icon={faArrowUp} size="xs" />
               : <FontAwesomeIcon icon={faArrowDown} size="xs" />
             : null}
           </li>
           <li>
             <button onClick={() => updateSort("liked")}>Liked</button>
-            {sortType === "liked" ?
-              sortOrder === "ascending" ?
+            {sortType[0] === "liked" ?
+              sortType[1] === "ascending" ?
                 <FontAwesomeIcon icon={faArrowUp} size="xs" />
               : <FontAwesomeIcon icon={faArrowDown} size="xs" />
             : null}
