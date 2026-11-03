@@ -58,7 +58,7 @@ export default function Diary(): ReactNode {
   }, [entries, sortType]);
 
   async function handleLike(id: number, liked: boolean): Promise<void> {
-    // Send update request
+    // Send update request to like entry
     const res = await fetch(`/entries/${id}`, {
       method: "PATCH",
       headers: {
@@ -82,6 +82,7 @@ export default function Diary(): ReactNode {
   }
 
   async function updateProgress(id: number, progress: number): Promise<void> {
+    // Send update request to increment entry
     const res = await fetch(`/entries/${id}`, {
       method: "PATCH",
       headers: {
@@ -105,9 +106,11 @@ export default function Diary(): ReactNode {
   }
 
   function updateSort(type: SortType) {
+    // Change the sort order
     let newSort: SortType;
     let newOrder: SortOrder;
 
+    // If the current sort type was clicked, change the order instead
     if (type === sortType[0]) {
       newSort = sortType[0];
       if (sortType[1] === "ascending") {
