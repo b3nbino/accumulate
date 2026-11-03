@@ -166,15 +166,14 @@ header {
   width: 50%;
   margin: auto;
   text-align: center;
-  padding-bottom: 6px;
   border-bottom-left-radius: 24px;
   border-bottom-right-radius: 24px;
-  background-color: rgb(68, 66, 66);
+  background-color: rgba(68, 66, 66, 0.5);
 }
 
 header h1 {
   color: rgb(253, 253, 253);
-  margin-bottom: 12px;
+  padding-top: 12px;
 }
 
 footer {
@@ -183,7 +182,7 @@ footer {
   height: 120px;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
-  background-color: rgb(68, 66, 66);
+  background-color: rgba(68, 66, 66, 0.5);
 }
 
 nav {
