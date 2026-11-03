@@ -12,13 +12,14 @@ import {
 // Type imports
 import type { EntryType } from "../types/EntryType";
 import convertLastEdited from "../utils/convertLastEdited";
-
-// Component types
-type SortType = "date" | "title" | "progress" | "type" | "rating" | "liked";
-type SortOrder = "ascending" | "descending";
+import type { SortOrder, SortType } from "../types/Sorting";
+import sortEntries from "../utils/sortEntries";
 
 export default function Diary(): ReactNode {
   const [entries, setEntries] = useState<EntryType[]>(() => {
+    return [];
+  });
+  const [sortedEntries, setSortedEntries] = useState<EntryType[]>(() => {
     return [];
   });
   const [sortType, setSortType] = useState<SortType>("date");
@@ -26,6 +27,7 @@ export default function Diary(): ReactNode {
   const [displayCreationModal, setDisplayCreationModal] =
     useState<boolean>(false);
 
+  // Effects
   useEffect(() => {
     (async () => {
       // Get entries from server
@@ -37,20 +39,17 @@ export default function Diary(): ReactNode {
         convertLastEdited(entry);
       });
 
-      // Sort by date descending default
-      json.sort((a: EntryType, b: EntryType) => {
-        if (a.last_edited_date > b.last_edited_date) {
-          return -1;
-        } else if (a.last_edited_date < b.last_edited_date) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-
       setEntries(json);
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      // Sorts entries when sorting selection or entries changes
+      const newEntries = sortEntries(entries, sortType, sortOrder);
+      setSortedEntries(newEntries);
+    })();
+  }, [entries, sortType, sortOrder]);
 
   async function handleLike(id: number, liked: boolean): Promise<void> {
     // Send update request
@@ -117,151 +116,6 @@ export default function Diary(): ReactNode {
 
     setSortType(newSort);
     setSortOrder(newOrder);
-
-    const entriesCopy: EntryType[] = [...entries];
-
-    switch (newSort) {
-      case "date":
-        if (newOrder === "ascending") {
-          entriesCopy.sort((a, b) => {
-            if (a.last_edited_date < b.last_edited_date) {
-              return -1;
-            } else if (a.last_edited_date > b.last_edited_date) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        } else {
-          entriesCopy.sort((a, b) => {
-            if (a.last_edited_date > b.last_edited_date) {
-              return -1;
-            } else if (a.last_edited_date < b.last_edited_date) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        }
-        break;
-      case "title":
-        if (newOrder === "ascending") {
-          entriesCopy.sort((a, b) => {
-            if (a.title < b.title) {
-              return -1;
-            } else if (a.title > b.title) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        } else {
-          entriesCopy.sort((a, b) => {
-            if (a.title > b.title) {
-              return -1;
-            } else if (a.title < b.title) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        }
-        break;
-      case "progress":
-        if (newOrder === "ascending") {
-          entriesCopy.sort((a, b) => a.progress - b.progress);
-        } else {
-          entriesCopy.sort((a, b) => b.progress - a.progress);
-        }
-        break;
-      case "type":
-        if (newOrder === "ascending") {
-          entriesCopy.sort((a, b) => {
-            if (a.media_type < b.media_type) {
-              return -1;
-            } else if (a.media_type > b.media_type) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        } else {
-          entriesCopy.sort((a, b) => {
-            if (a.media_type > b.media_type) {
-              return -1;
-            } else if (a.media_type < b.media_type) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        }
-        break;
-      case "rating":
-        if (newOrder === "ascending") {
-          entriesCopy.sort((a, b) => {
-            if (a.user_rating === null) {
-              a.user_rating = -1;
-            }
-
-            if (b.user_rating === null) {
-              b.user_rating = -1;
-            }
-
-            if (a.user_rating < b.user_rating) {
-              return -1;
-            } else if (a.user_rating > b.user_rating) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        } else {
-          entriesCopy.sort((a, b) => {
-            if (a.user_rating === null) {
-              a.user_rating = -1;
-            }
-
-            if (b.user_rating === null) {
-              b.user_rating = -1;
-            }
-
-            if (a.user_rating > b.user_rating) {
-              return -1;
-            } else if (a.user_rating < b.user_rating) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        }
-        break;
-      case "liked":
-        if (newOrder === "ascending") {
-          entriesCopy.sort((a, b) => {
-            if (a.liked < b.liked) {
-              return -1;
-            } else if (a.liked > b.liked) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        } else {
-          entriesCopy.sort((a, b) => {
-            if (a.liked > b.liked) {
-              return -1;
-            } else if (a.liked < b.liked) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        }
-        break;
-    }
-
-    setEntries(entriesCopy);
   }
 
   function listEntries(allEntrires: EntryType[]): ReactNode {
@@ -343,7 +197,7 @@ export default function Diary(): ReactNode {
           </li>
         </ul>
       </div>
-      {listEntries(entries)}
+      {listEntries(sortedEntries)}
       <CreateEntryModal
         hideCreationModal={hideCreationModal}
         displayCreationModal={displayCreationModal}
