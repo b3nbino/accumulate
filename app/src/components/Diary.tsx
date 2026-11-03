@@ -1,36 +1,43 @@
+// Imports
 import { useEffect, useState, type ReactNode } from "react";
-import type { EntryType } from "../types/EntryType";
 import Entry from "./Entry";
+import CreateEntryModal from "./CreateEntryModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDown,
   faArrowUp,
   faSquarePlus,
 } from "@fortawesome/free-solid-svg-icons";
-import CreateEntryModal from "./CreateEntryModal";
 
-type SortTypeType = "date" | "title" | "progress" | "type" | "rating" | "liked";
-type SortOrderType = "ascending" | "descending";
+// Type imports
+import type { EntryType } from "../types/EntryType";
+import convertLastEdited from "../utils/convertLastEdited";
+
+// Component types
+type SortType = "date" | "title" | "progress" | "type" | "rating" | "liked";
+type SortOrder = "ascending" | "descending";
 
 export default function Diary(): ReactNode {
   const [entries, setEntries] = useState<EntryType[]>(() => {
     return [];
   });
-  const [sortType, setSortType] = useState<SortTypeType>("date");
-  const [sortOrder, setSortOrder] = useState<SortOrderType>("descending");
+  const [sortType, setSortType] = useState<SortType>("date");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("descending");
   const [displayCreationModal, setDisplayCreationModal] =
     useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
-      const req = await fetch("/entries");
-      const json = await req.json();
+      // Get entries from server
+      const res = await fetch("/entries");
+      const json = await res.json();
 
+      // Make last edited date into an object
       json.forEach((entry: EntryType) => {
-        if ("last_edited_date" in entry) {
-          entry.last_edited_date = new Date(entry.last_edited_date);
-        }
+        convertLastEdited(entry);
       });
+
+      // Sort by date descending default
       json.sort((a: EntryType, b: EntryType) => {
         if (a.last_edited_date > b.last_edited_date) {
           return -1;
@@ -45,7 +52,8 @@ export default function Diary(): ReactNode {
     })();
   }, []);
 
-  async function updateLike(id: number, liked: boolean) {
+  async function handleLike(id: number, liked: boolean) {
+    // Send update request
     const res = await fetch(`/entries/${id}`, {
       method: "PATCH",
       headers: {
@@ -56,10 +64,7 @@ export default function Diary(): ReactNode {
       }),
     });
     const json = await res.json();
-
-    if ("last_edited_date" in json) {
-      json.last_edited_date = new Date(json.last_edited_date);
-    }
+    convertLastEdited(json);
 
     const entriesCopy = [...entries];
 
@@ -97,9 +102,9 @@ export default function Diary(): ReactNode {
     setEntries(entriesCopy);
   }
 
-  function updateSort(type: SortTypeType) {
-    let newSort: SortTypeType;
-    let newOrder: SortOrderType;
+  function updateSort(type: SortType) {
+    let newSort: SortType;
+    let newOrder: SortOrder;
 
     if (type === sortType) {
       newSort = sortType;
@@ -268,7 +273,7 @@ export default function Diary(): ReactNode {
         <Entry
           key={entry.id}
           {...entry}
-          onLike={updateLike}
+          onLike={handleLike}
           onIncrement={updateProgress}
         ></Entry>
       );
