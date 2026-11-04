@@ -1,13 +1,6 @@
 // Imports
-import React, { useState } from "react";
-
 // Type
-import type { NewEntryRequest, StatusType } from "../types/EntryType";
-
-interface CreateEntryModalProps {
-  isShown: boolean;
-  hideCreationModal: () => void;
-}
+import type { StatusType } from "../types/EntryType";
 
 interface FormValuesType {
   title: string;
@@ -24,89 +17,23 @@ interface FormValuesType {
   liked: boolean;
 }
 
+interface CreateEntryModalProps {
+  formValues: FormValuesType;
+  setFormValues: React.Dispatch<React.SetStateAction<FormValuesType>>;
+  clearFormValues: () => void;
+  onSubmit: (event: React.SubmitEvent) => void;
+  isShown: boolean;
+  hideCreationModal: () => void;
+}
+
 export default function CreateEntryModal({
+  formValues,
+  setFormValues,
+  clearFormValues,
+  onSubmit,
   isShown,
   hideCreationModal,
 }: CreateEntryModalProps) {
-  const [formValues, setFormValues] = useState<FormValuesType>({
-    title: "",
-    media_type: "",
-    release_date: "",
-    start_date: "",
-    finish_date: "",
-    progress_type: "",
-    total_length: 0,
-    progress: 0,
-    status: "watching",
-    user_rating: 0,
-    review: "",
-    liked: false,
-  });
-
-  function clearFormValues(): void {
-    setFormValues({
-      title: "",
-      media_type: "",
-      release_date: "",
-      start_date: "",
-      finish_date: "",
-      progress_type: "",
-      total_length: 0,
-      progress: 0,
-      status: "watching",
-      user_rating: 0,
-      review: "",
-      liked: false,
-    });
-  }
-
-  async function handleSubmit(event: React.SubmitEvent): Promise<void> {
-    event.preventDefault();
-
-    // Shape form data into proper json body
-    const createdEntry: NewEntryRequest = {
-      media_id: Math.floor(Math.random() * 999999) + 1,
-      source: "Custom",
-      media_type: formValues.media_type,
-      title: formValues.title,
-      release_date: new Date(formValues.release_date).toJSON(),
-      start_date:
-        formValues.start_date ?
-          new Date(formValues.start_date).toJSON()
-        : undefined,
-      finish_date:
-        formValues.finish_date ?
-          new Date(formValues.finish_date).toJSON()
-        : undefined,
-      status: formValues.status,
-      progress: formValues.progress,
-      total_length: formValues.total_length,
-      progress_type: formValues.progress_type,
-      user_rating: formValues.user_rating || undefined,
-      review: formValues.review || undefined,
-      liked: formValues.liked,
-    };
-
-    try {
-      const response = await fetch("/entries", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify(createdEntry),
-      });
-
-      if (response.status !== 201) {
-        console.log("failed to create new entry");
-      }
-
-      hideCreationModal();
-      clearFormValues();
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
   return (
     <>
       <div
@@ -129,7 +56,7 @@ export default function CreateEntryModal({
           id="creation-form"
           action="/entries"
           method="post"
-          onSubmit={handleSubmit}
+          onSubmit={onSubmit}
         >
           <div>
             <label htmlFor="title">

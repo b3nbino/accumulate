@@ -10,10 +10,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 // Type imports
-import type { EntryType } from "../types/EntryType";
+import type {
+  EntryType,
+  NewEntryRequest,
+  StatusType,
+} from "../types/EntryType";
 import convertLastEdited from "../utils/convertLastEdited";
 import type { SortOrder, SortType } from "../types/Sorting";
 import sortEntries from "../utils/sortEntries";
+
+// Components types
+interface FormValuesType {
+  title: string;
+  media_type: string;
+  release_date: string;
+  start_date: string;
+  finish_date: string;
+  progress_type: string;
+  total_length: number;
+  progress: number;
+  status: StatusType;
+  user_rating: number;
+  review: string;
+  liked: boolean;
+}
 
 export default function Diary(): ReactNode {
   const [entries, setEntries] = useState<EntryType[]>(() => {
@@ -28,6 +48,20 @@ export default function Diary(): ReactNode {
   ]);
   const [isCreationModalShown, setIsCreationModalShown] =
     useState<boolean>(false);
+  const [formValues, setFormValues] = useState<FormValuesType>({
+    title: "",
+    media_type: "",
+    release_date: "",
+    start_date: "",
+    finish_date: "",
+    progress_type: "",
+    total_length: 0,
+    progress: 0,
+    status: "watching",
+    user_rating: 0,
+    review: "",
+    liked: false,
+  });
 
   // Effects
   useEffect(() => {
@@ -37,9 +71,7 @@ export default function Diary(): ReactNode {
       const json = await res.json();
 
       // Make last edited date into an object
-      json.forEach((entry: EntryType) => {
-        convertLastEdited(entry);
-      });
+      json.forEach((entry: EntryType) => convertLastEdited(entry));
 
       setEntries(json);
     })();
@@ -149,6 +181,75 @@ export default function Diary(): ReactNode {
     setIsCreationModalShown(false);
   }
 
+  function clearFormValues(): void {
+    setFormValues({
+      title: "",
+      media_type: "",
+      release_date: "",
+      start_date: "",
+      finish_date: "",
+      progress_type: "",
+      total_length: 0,
+      progress: 0,
+      status: "watching",
+      user_rating: 0,
+      review: "",
+      liked: false,
+    });
+  }
+
+  async function handleSubmit(event: React.SubmitEvent): Promise<void> {
+    event.preventDefault();
+
+    // Shape form data into proper json body
+    const createdEntry: NewEntryRequest = {
+      media_id: Math.floor(Math.random() * 999999) + 1,
+      source: "Custom",
+      media_type: formValues.media_type,
+      title: formValues.title,
+      release_date: new Date(formValues.release_date).toJSON(),
+      start_date:
+        formValues.start_date ?
+          new Date(formValues.start_date).toJSON()
+        : undefined,
+      finish_date:
+        formValues.finish_date ?
+          new Date(formValues.finish_date).toJSON()
+        : undefined,
+      status: formValues.status,
+      progress: formValues.progress,
+      total_length: formValues.total_length,
+      progress_type: formValues.progress_type,
+      user_rating: formValues.user_rating || undefined,
+      review: formValues.review || undefined,
+      liked: formValues.liked,
+    };
+
+    try {
+      const res = await fetch("/entries", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify(createdEntry),
+      });
+
+      if (res.status !== 201) {
+        console.log("failed to create new entry");
+        return;
+      }
+
+      const json: EntryType = await res.json();
+      convertLastEdited(json);
+
+      setEntries([...entries, json]);
+      hideCreationModal();
+      clearFormValues();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
     <section id="diary">
       <div id="diary-topper">
@@ -207,6 +308,10 @@ export default function Diary(): ReactNode {
       </div>
       {listEntries(sortedEntries)}
       <CreateEntryModal
+        formValues={formValues}
+        setFormValues={setFormValues}
+        clearFormValues={clearFormValues}
+        onSubmit={handleSubmit}
         hideCreationModal={hideCreationModal}
         isShown={isCreationModalShown}
       ></CreateEntryModal>
