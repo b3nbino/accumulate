@@ -57,6 +57,24 @@ export default function Entry({
       .map((part: string) => <p key={part}>{part}</p>);
   }
 
+  function getMediaTagColors(mediaType: MediaType): {
+    color: string;
+    backgroundColor: string;
+  } {
+    switch (mediaType) {
+      case "Book":
+        return { color: "rgb(0, 65, 0)", backgroundColor: "green" };
+      case "Movie":
+        return { color: "rgb(143, 1, 1)", backgroundColor: "red" };
+      case "TV-Show":
+        return { color: "rgb(0, 0, 117)", backgroundColor: "blue" };
+      case "Game":
+        return { color: "rgb(65, 0, 65)", backgroundColor: "purple" };
+      default:
+        return { color: "rgb(105, 105, 105)", backgroundColor: "darkgrey" };
+    }
+  }
+
   return (
     <li className="entry" id={`entry-${id}`} key={id}>
       <div className="list-entry-date">
@@ -68,10 +86,7 @@ export default function Entry({
       <div className="list-entry-middle">
         <div className="list-entry-header">
           <p className="list-entry-title">{title}</p>
-          <p
-            className={`media-tag`}
-            style={{ color: "rgb(143, 1, 1)", backgroundColor: "red" }}
-          >
+          <p className={`media-tag`} style={getMediaTagColors(media_type)}>
             {media_type}
           </p>
         </div>
