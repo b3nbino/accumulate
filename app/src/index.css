@@ -63,36 +63,10 @@ section {
   margin-right: 12px;
 }
 
-.type-Movie {
+.media-tag {
   font-size: 20px;
   font-weight: 500;
   padding: 0px 12px 3px;
-  color: rgb(143, 1, 1);
-  background-color: red;
-  border-radius: 24px;
-}
-.type-Book {
-  font-size: 20px;
-  font-weight: 500;
-  padding: 0px 12px 3px;
-  color: rgb(0, 65, 0);
-  background-color: green;
-  border-radius: 24px;
-}
-.type-Game {
-  font-size: 20px;
-  font-weight: 500;
-  padding: 0px 12px 3px;
-  color: rgb(65, 0, 65);
-  background-color: purple;
-  border-radius: 24px;
-}
-.type-TV-Show {
-  font-size: 20px;
-  font-weight: 500;
-  padding: 0px 12px 3px;
-  color: rgb(0, 0, 117);
-  background-color: blue;
   border-radius: 24px;
 }
 

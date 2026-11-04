@@ -68,7 +68,12 @@ export default function Entry({
       <div className="list-entry-middle">
         <div className="list-entry-header">
           <p className="list-entry-title">{title}</p>
-          <p className={`type-${media_type}`}>{media_type}</p>
+          <p
+            className={`media-tag`}
+            style={{ color: "rgb(143, 1, 1)", backgroundColor: "red" }}
+          >
+            {media_type}
+          </p>
         </div>
         <div className="progress-bar">
           <div

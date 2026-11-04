@@ -43,7 +43,7 @@ export default function CreateEntryModal({
     liked: false,
   });
 
-  function clearFormValues() {
+  function clearFormValues(): void {
     setFormValues({
       title: "",
       media_type: "",
@@ -60,22 +60,23 @@ export default function CreateEntryModal({
     });
   }
 
-  async function handleSubmit(event: React.SubmitEvent) {
+  async function handleSubmit(event: React.SubmitEvent): Promise<void> {
     event.preventDefault();
 
+    // Shape form data into proper json body
     const createdEntry: NewEntryRequest = {
       media_id: Math.floor(Math.random() * 999999) + 1,
       source: "Custom",
       media_type: formValues.media_type,
       title: formValues.title,
-      release_date: new Date(formValues.release_date).toISOString(),
+      release_date: new Date(formValues.release_date).toJSON(),
       start_date:
         formValues.start_date ?
-          new Date(formValues.start_date).toISOString()
+          new Date(formValues.start_date).toJSON()
         : undefined,
       finish_date:
         formValues.finish_date ?
-          new Date(formValues.finish_date).toISOString()
+          new Date(formValues.finish_date).toJSON()
         : undefined,
       status: formValues.status,
       progress: formValues.progress,
@@ -87,11 +88,10 @@ export default function CreateEntryModal({
     };
 
     try {
-      console.log("sending");
       const response = await fetch("/entries", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json; charset=utf-8",
         },
         body: JSON.stringify(createdEntry),
       });
@@ -325,7 +325,7 @@ export default function CreateEntryModal({
               onChange={(event) => {
                 setFormValues({
                   ...formValues,
-                  ...{ liked: Boolean(event.target.value) },
+                  ...{ liked: event.target.checked },
                 });
               }}
             />
