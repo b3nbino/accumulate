@@ -19,11 +19,11 @@ interface FormValuesType {
 
 interface CreateEntryModalProps {
   formValues: FormValuesType;
+  isShown: boolean;
   setFormValues: React.Dispatch<React.SetStateAction<FormValuesType>>;
   clearFormValues: () => void;
   onSubmit: (event: React.SubmitEvent) => void;
-  isShown: boolean;
-  hideCreationModal: () => void;
+  hideModal: () => void;
 }
 
 export default function CreateEntryModal({
@@ -32,7 +32,7 @@ export default function CreateEntryModal({
   clearFormValues,
   onSubmit,
   isShown,
-  hideCreationModal,
+  hideModal,
 }: CreateEntryModalProps) {
   return (
     <>
@@ -40,7 +40,7 @@ export default function CreateEntryModal({
         className="overlay"
         onClick={(event) => {
           event.nativeEvent.stopImmediatePropagation();
-          hideCreationModal();
+          hideModal();
           clearFormValues();
         }}
         style={{ display: isShown ? "" : "none" }}
@@ -262,7 +262,7 @@ export default function CreateEntryModal({
             <button
               id="cancel-entry-button"
               onClick={() => {
-                hideCreationModal();
+                hideModal();
                 clearFormValues();
               }}
             >

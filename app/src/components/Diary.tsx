@@ -312,7 +312,7 @@ export default function Diary(): ReactNode {
         setFormValues={setFormValues}
         clearFormValues={clearFormValues}
         onSubmit={handleSubmit}
-        hideCreationModal={hideCreationModal}
+        hideModal={hideCreationModal}
         isShown={isCreationModalShown}
       ></CreateEntryModal>
       <div className="bottom-buttons">
