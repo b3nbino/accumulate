@@ -2,11 +2,11 @@
 
 ## :scroll: Preface
 
-This is a project that I'm creating to help **sharpen** and **showcase** my abilities writing code and developing web apps **WITHOUT AI**. If you're looking for a project of mine that did involve some AI assisted development, checkout [Chunkwise](https://github.com/Chunkwise/chunkwise).
+This is a project that I'm creating to help **sharpen** and **showcase** my abilities writing code and developing web apps **WITHOUT AI**. If you're looking for a project of mine that did involve some AI assisted development, checkout [Chunkwise](https://github.com/Chunkwise/chunkwise), [sfc-generator](https://github.com/b3nbino/sfc_generator), or [huckberry-th](https://github.com/b3nbino/huckberry-th).
 
 ## :ledger: Introduction
 
-Accumulate is a media tracker for logging games, TV shows, movies, and books. My end goal is to have a one stop shop for all kinds of media, possibly even including things like Comics/Manga, Podcasts,
+Accumulate is a media journal for logging games, TV shows, movies, and books. My end goal is to have a one stop shop for all kinds of media, possibly even including things like Comics/Manga, Podcasts, or anything else you might want to track.
 
 ## :hammer: Tools/Technologies
 
@@ -16,7 +16,7 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Node.js](https://nodejs.org/en)
-- [Express.js](https://expressjs.com/)
+  - [Express.js](https://expressjs.com/)
 - [PostgreSQL](https://www.postgresql.org/docs/14/index.html)
 
 **:open_file_folder: Frontend**:
@@ -25,6 +25,8 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 - [React](https://react.dev/)
   - [React Router](https://reactrouter.com/)
 - [Vite](https://vite.dev/)
+  - ES Lint
+- [FontAwesome](https://fontawesome.com/) Icons
 
 **:cloud: Cloud**: TBD
 
@@ -38,14 +40,13 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 ## :clipboard: Planned Features
 
 - [x] RESTful API
-- [ ] Responsive frontend
-- [ ] Relational database storage
+- [ ] Polished styling & Responsive frontend
+- [x] Relational database storage
   - [ ] [Current ERD](https://excalidraw.com/#json=C__3hdQRyS6CVFnNQ-vh-,U1u-CudI9DGr4sFwLEucBg)
 - [ ] Third party API integration
   - [ ] [The Movie Database](https://developer.themoviedb.org/reference/collection-details)
 - [ ] User accounts/sessions
   - [ ] JWT Tokens?
-- [ ] Polished styling
 - [ ] Automated testing
   - [ ] Unit
   - [ ] Integration
@@ -57,6 +58,9 @@ I'll do my best to keep an up to date list of the technologies that I use, the p
 - [ ] Shareable lists
 - [ ] Infrastructure as Code files, CLI, EXE, or app (some kind of easy setup)
 - [ ] AI Chatbot
+- [ ] CI/CD Pipeline
+- [ ] Mobile app
+- [ ] Achievements
 
 ## :page_with_curl: Instructions
 
@@ -74,44 +78,7 @@ To check out the current progress for yourself (assuming you have Node & NPM, an
 
 ## Next Steps
 
-- Clean-up my Diary and CreateEntryModal code!!!
-  - Add comments
-  - Review typing
-  - Use const more
-  - More granular React components
-- More functions
-  - Extract new entry data transformation into a function on server
-  - Could make function to extract newEntry properties for createEntry or use dynamic creation like with updateEntry (Should be safe enough when using Zod)
-  - Add returning statement to patch endpoint queries, instead of making an extra call (see createEntry)
-- Add creation and deletion through app
-  - Add button at the bottom of the page
-    - Modal popup form for creation
-    - Submission function
-    - Reset function for when closing modal
-  - Details modal for existing entries
-    - Let's users update in detail
-      - Changing the name/progress/progress type/start/finish/status/length
-      - Rating and reviewing
-    - Entry deletion
-- Add frontend validation
-- Consider reworking entry type property names
-  - Also, use more general terms. Not everything is watching
-  - De-capitalize media types
-- Handle zero entries case on frontend
-- Handle many entries case
-  - Pagination?
-  - Infinite scroll?
-  - Is it needed?
-- Update frontend to use either API response or new fetches, rather than updating directly.
-- Think about adding status to entries visually
-- Fix catch blocks to improve error handling
-  - Maybe improve the global error handler and use it to send error responses based on Error Types
-- Improve runtime validation using Zod
-- Use dotenv for app config
-- Create tests for unit, end-to-end, and maybe integration
-- Connect third party API with movies, probably TMDB
-- Improve app styling
-- Custom types should be able to include a custom color choice
+See [GitHub issues](https://github.com/b3nbino/accumulate/issues).
 
 ## Other Tools/References
 
