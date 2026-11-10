@@ -6,7 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowDown,
   faArrowUp,
+  faHeart,
+  faPencil,
   faSquarePlus,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Type imports
@@ -307,6 +310,75 @@ export default function Diary(): ReactNode {
         </ul>
       </div>
       {listEntries(sortedEntries)}
+      <div
+        className="overlay"
+        onClick={(event) => {
+          event.nativeEvent.stopImmediatePropagation();
+          // hideModal();
+          clearFormValues();
+        }}
+        style={{}}
+      >
+        {" "}
+      </div>
+      <section id="details-modal" className="modal">
+        <div>
+          <p>Status: Completed</p>
+          <FontAwesomeIcon icon={faHeart} size="2x" />
+        </div>
+        <div>
+          <h2>
+            The Gamer <span>Webtoon</span>
+          </h2>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+        <p>Release date: 10/7/15</p>
+        <div className="progress-bar">
+          <div
+            className="list-entry-progress"
+            style={
+              {
+                // width: `${Math.floor(((progress ?? 0) / total_length) * 100)}%`,
+                // borderTopRightRadius: `${progress === total_length ? "24px" : "6px"}`,
+                // borderBottomRightRadius: `${progress === total_length ? "24px" : "6px"}`,
+                // backgroundColor: `${getMediaTypeColor(media_type)}`,
+              }
+            }
+          ></div>
+          <p className="list-entry-progress-amount">
+            {/* {progress}/{total_length} {progress_type} */}
+          </p>
+          <FontAwesomeIcon icon={faSquarePlus} />
+        </div>
+        <div>
+          <p>Start date: 11/2/20</p>
+          <p>Finish date: 12/15/21</p>
+        </div>
+        <div>
+          <h3>Your Review:</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra
+            sollicitudin leo, id mollis ex efficitur quis. Integer imperdiet nec
+            lectus et feugiat. In vitae finibus lectus. Donec lobortis arcu sed
+            ipsum eleifend, quis laoreet augue vestibulum. Nam interdum
+            ultricies lectus. Vestibulum ornare, odio ac egestas ullamcorper,
+            purus elit accumsan nunc, ut venenatis magna nunc ut erat. Praesent
+            elementum diam sit amet faucibus laoreet. Mauris in nisi ac lectus
+            commodo fermentum. Cras molestie erat arcu, et porttitor dui semper
+            at. Duis sapien mauris, consectetur in libero ut, lobortis dapibus
+            nibh.
+          </p>
+        </div>
+        <div>
+          <button>
+            <FontAwesomeIcon icon={faPencil} /> Edit
+          </button>
+          <button>Cancel</button>
+        </div>
+      </section>
       <CreateEntryModal
         formValues={formValues}
         setFormValues={setFormValues}
