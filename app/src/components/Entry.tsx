@@ -11,7 +11,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStars } from "../utils/getStars";
 
 // Type imports
-import type { EntryType, MediaType } from "../types/EntryType";
+import type { EntryType } from "../types/EntryType";
+import getMediaTypeColor from "../utils/getMediaTypeColor";
+import getMediaTagColor from "../utils/getMediaTagColor";
 
 interface EntryProps extends EntryType {
   onLike: (id: number, liked: boolean) => void;
@@ -31,22 +33,6 @@ export default function Entry({
   onLike,
   onIncrement,
 }: EntryProps): ReactNode {
-  function getMediaTypeColor(mediaType: MediaType): string {
-    // Customize the color of the media type tag
-    switch (mediaType) {
-      case "Movie":
-        return "red";
-      case "Book":
-        return "green";
-      case "Game":
-        return "purple";
-      case "TV-Show":
-        return "blue";
-      default:
-        return "grey";
-    }
-  }
-
   function createDateElement(date: Date): ReactNode {
     return date
       .toLocaleDateString("en-US", {
@@ -55,24 +41,6 @@ export default function Entry({
       })
       .split(" ")
       .map((part: string) => <p key={part}>{part}</p>);
-  }
-
-  function getMediaTagColors(mediaType: MediaType): {
-    color: string;
-    backgroundColor: string;
-  } {
-    switch (mediaType) {
-      case "Book":
-        return { color: "rgb(0, 65, 0)", backgroundColor: "green" };
-      case "Movie":
-        return { color: "rgb(143, 1, 1)", backgroundColor: "red" };
-      case "TV-Show":
-        return { color: "rgb(0, 0, 117)", backgroundColor: "blue" };
-      case "Game":
-        return { color: "rgb(65, 0, 65)", backgroundColor: "purple" };
-      default:
-        return { color: "rgb(105, 105, 105)", backgroundColor: "darkgrey" };
-    }
   }
 
   return (
@@ -86,7 +54,7 @@ export default function Entry({
       <div className="list-entry-middle">
         <div className="list-entry-header">
           <p className="list-entry-title">{title}</p>
-          <p className={`media-tag`} style={getMediaTagColors(media_type)}>
+          <p className={`media-tag`} style={getMediaTagColor(media_type)}>
             {media_type}
           </p>
         </div>
